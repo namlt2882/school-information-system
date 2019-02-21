@@ -1,0 +1,488 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SchoolInformationSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AcademicTranscript">
+          <Key>
+            <PropertyRef Name="ClassSubjectId" />
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="ClassSubjectId" Type="int" Nullable="false" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="Score" Type="float" />
+        </EntityType>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Manager" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="Status" Type="int" />
+        </EntityType>
+        <EntityType Name="ClassMember">
+          <Key>
+            <PropertyRef Name="ClassId" />
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="ClassId" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClassSubject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ClassId" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="SubjectId" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Code" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Birthday" Type="date" />
+        </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Status" Type="int" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="Password" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Role" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AcademicTranscript_ClassSubject">
+          <End Role="ClassSubject" Type="Self.ClassSubject" Multiplicity="1" />
+          <End Role="AcademicTranscript" Type="Self.AcademicTranscript" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassSubject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AcademicTranscript">
+              <PropertyRef Name="ClassSubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AcademicTranscript_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="AcademicTranscript" Type="Self.AcademicTranscript" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AcademicTranscript">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Class_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Class" Type="Self.Class" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Class">
+              <PropertyRef Name="Manager" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassMember_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="ClassMember" Type="Self.ClassMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassMember">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassMember_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="ClassMember" Type="Self.ClassMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassMember">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassSubject_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="ClassSubject" Type="Self.ClassSubject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassSubject">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassSubject_Subject">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+          <End Role="ClassSubject" Type="Self.ClassSubject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassSubject">
+              <PropertyRef Name="SubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SchoolInformationSystemModelStoreContainer">
+          <EntitySet Name="AcademicTranscript" EntityType="Self.AcademicTranscript" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClassMember" EntityType="Self.ClassMember" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClassSubject" EntityType="Self.ClassSubject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subject" EntityType="Self.Subject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AcademicTranscript_ClassSubject" Association="Self.FK_AcademicTranscript_ClassSubject">
+            <End Role="ClassSubject" EntitySet="ClassSubject" />
+            <End Role="AcademicTranscript" EntitySet="AcademicTranscript" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AcademicTranscript_Student" Association="Self.FK_AcademicTranscript_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="AcademicTranscript" EntitySet="AcademicTranscript" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Class_Users" Association="Self.FK_Class_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Class" EntitySet="Class" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassMember_Class" Association="Self.FK_ClassMember_Class">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="ClassMember" EntitySet="ClassMember" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassMember_Student" Association="Self.FK_ClassMember_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="ClassMember" EntitySet="ClassMember" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassSubject_Class" Association="Self.FK_ClassSubject_Class">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="ClassSubject" EntitySet="ClassSubject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassSubject_Subject" Association="Self.FK_ClassSubject_Subject">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="ClassSubject" EntitySet="ClassSubject" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SchoolInformationSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SchoolInformationSystemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AcademicTranscripts" EntityType="SchoolInformationSystemModel.AcademicTranscript" />
+          <EntitySet Name="Classes" EntityType="SchoolInformationSystemModel.Class" />
+          <EntitySet Name="ClassMembers" EntityType="SchoolInformationSystemModel.ClassMember" />
+          <EntitySet Name="ClassSubjects" EntityType="SchoolInformationSystemModel.ClassSubject" />
+          <EntitySet Name="Students" EntityType="SchoolInformationSystemModel.Student" />
+          <EntitySet Name="Subjects" EntityType="SchoolInformationSystemModel.Subject" />
+          <EntitySet Name="Users" EntityType="SchoolInformationSystemModel.User" />
+          <AssociationSet Name="FK_AcademicTranscript_ClassSubject" Association="SchoolInformationSystemModel.FK_AcademicTranscript_ClassSubject">
+            <End Role="ClassSubject" EntitySet="ClassSubjects" />
+            <End Role="AcademicTranscript" EntitySet="AcademicTranscripts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AcademicTranscript_Student" Association="SchoolInformationSystemModel.FK_AcademicTranscript_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="AcademicTranscript" EntitySet="AcademicTranscripts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Class_Users" Association="SchoolInformationSystemModel.FK_Class_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Class" EntitySet="Classes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassMember_Class" Association="SchoolInformationSystemModel.FK_ClassMember_Class">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="ClassMember" EntitySet="ClassMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassSubject_Class" Association="SchoolInformationSystemModel.FK_ClassSubject_Class">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="ClassSubject" EntitySet="ClassSubjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassMember_Student" Association="SchoolInformationSystemModel.FK_ClassMember_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="ClassMember" EntitySet="ClassMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassSubject_Subject" Association="SchoolInformationSystemModel.FK_ClassSubject_Subject">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="ClassSubject" EntitySet="ClassSubjects" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AcademicTranscript">
+          <Key>
+            <PropertyRef Name="ClassSubjectId" />
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="ClassSubjectId" Type="Int32" Nullable="false" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="Score" Type="Double" />
+          <NavigationProperty Name="ClassSubject" Relationship="SchoolInformationSystemModel.FK_AcademicTranscript_ClassSubject" FromRole="AcademicTranscript" ToRole="ClassSubject" />
+          <NavigationProperty Name="Student" Relationship="SchoolInformationSystemModel.FK_AcademicTranscript_Student" FromRole="AcademicTranscript" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Manager" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Status" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="SchoolInformationSystemModel.FK_Class_Users" FromRole="Class" ToRole="User" />
+          <NavigationProperty Name="ClassMembers" Relationship="SchoolInformationSystemModel.FK_ClassMember_Class" FromRole="Class" ToRole="ClassMember" />
+          <NavigationProperty Name="ClassSubjects" Relationship="SchoolInformationSystemModel.FK_ClassSubject_Class" FromRole="Class" ToRole="ClassSubject" />
+        </EntityType>
+        <EntityType Name="ClassMember">
+          <Key>
+            <PropertyRef Name="ClassId" />
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="ClassId" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Class" Relationship="SchoolInformationSystemModel.FK_ClassMember_Class" FromRole="ClassMember" ToRole="Class" />
+          <NavigationProperty Name="Student" Relationship="SchoolInformationSystemModel.FK_ClassMember_Student" FromRole="ClassMember" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="ClassSubject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ClassId" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="SubjectId" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="AcademicTranscripts" Relationship="SchoolInformationSystemModel.FK_AcademicTranscript_ClassSubject" FromRole="ClassSubject" ToRole="AcademicTranscript" />
+          <NavigationProperty Name="Class" Relationship="SchoolInformationSystemModel.FK_ClassSubject_Class" FromRole="ClassSubject" ToRole="Class" />
+          <NavigationProperty Name="Subject" Relationship="SchoolInformationSystemModel.FK_ClassSubject_Subject" FromRole="ClassSubject" ToRole="Subject" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Birthday" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="AcademicTranscripts" Relationship="SchoolInformationSystemModel.FK_AcademicTranscript_Student" FromRole="Student" ToRole="AcademicTranscript" />
+          <NavigationProperty Name="ClassMembers" Relationship="SchoolInformationSystemModel.FK_ClassMember_Student" FromRole="Student" ToRole="ClassMember" />
+        </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Status" Type="Int32" />
+          <NavigationProperty Name="ClassSubjects" Relationship="SchoolInformationSystemModel.FK_ClassSubject_Subject" FromRole="Subject" ToRole="ClassSubject" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Classes" Relationship="SchoolInformationSystemModel.FK_Class_Users" FromRole="User" ToRole="Class" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AcademicTranscript_ClassSubject">
+          <End Type="SchoolInformationSystemModel.ClassSubject" Role="ClassSubject" Multiplicity="1" />
+          <End Type="SchoolInformationSystemModel.AcademicTranscript" Role="AcademicTranscript" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassSubject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AcademicTranscript">
+              <PropertyRef Name="ClassSubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AcademicTranscript_Student">
+          <End Type="SchoolInformationSystemModel.Student" Role="Student" Multiplicity="1" />
+          <End Type="SchoolInformationSystemModel.AcademicTranscript" Role="AcademicTranscript" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AcademicTranscript">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Class_Users">
+          <End Type="SchoolInformationSystemModel.User" Role="User" Multiplicity="1" />
+          <End Type="SchoolInformationSystemModel.Class" Role="Class" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Class">
+              <PropertyRef Name="Manager" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassMember_Class">
+          <End Type="SchoolInformationSystemModel.Class" Role="Class" Multiplicity="1" />
+          <End Type="SchoolInformationSystemModel.ClassMember" Role="ClassMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassMember">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassSubject_Class">
+          <End Type="SchoolInformationSystemModel.Class" Role="Class" Multiplicity="1" />
+          <End Type="SchoolInformationSystemModel.ClassSubject" Role="ClassSubject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassSubject">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassMember_Student">
+          <End Type="SchoolInformationSystemModel.Student" Role="Student" Multiplicity="1" />
+          <End Type="SchoolInformationSystemModel.ClassMember" Role="ClassMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassMember">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassSubject_Subject">
+          <End Type="SchoolInformationSystemModel.Subject" Role="Subject" Multiplicity="1" />
+          <End Type="SchoolInformationSystemModel.ClassSubject" Role="ClassSubject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassSubject">
+              <PropertyRef Name="SubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SchoolInformationSystemModelStoreContainer" CdmEntityContainer="SchoolInformationSystemEntities">
+          <EntitySetMapping Name="AcademicTranscripts">
+            <EntityTypeMapping TypeName="SchoolInformationSystemModel.AcademicTranscript">
+              <MappingFragment StoreEntitySet="AcademicTranscript">
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="ClassSubjectId" ColumnName="ClassSubjectId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Classes">
+            <EntityTypeMapping TypeName="SchoolInformationSystemModel.Class">
+              <MappingFragment StoreEntitySet="Class">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Manager" ColumnName="Manager" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClassMembers">
+            <EntityTypeMapping TypeName="SchoolInformationSystemModel.ClassMember">
+              <MappingFragment StoreEntitySet="ClassMember">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClassSubjects">
+            <EntityTypeMapping TypeName="SchoolInformationSystemModel.ClassSubject">
+              <MappingFragment StoreEntitySet="ClassSubject">
+                <ScalarProperty Name="SubjectId" ColumnName="SubjectId" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="SchoolInformationSystemModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subjects">
+            <EntityTypeMapping TypeName="SchoolInformationSystemModel.Subject">
+              <MappingFragment StoreEntitySet="Subject">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="SchoolInformationSystemModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
