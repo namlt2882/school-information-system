@@ -1,4 +1,5 @@
-﻿using SIS_API.Service;
+﻿using SIS_API.Filter;
+using SIS_API.Service;
 using SIS_API.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Web.Http;
 
 namespace SIS_API.Controllers
 {
-
+    [JwtAuthentication]
     public class UserController : ApiController
     {
         UserService service = new UserService();
