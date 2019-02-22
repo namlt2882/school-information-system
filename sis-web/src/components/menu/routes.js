@@ -31,11 +31,6 @@ const routes = [
         path: '/transcript',
         exact: false,
         main: () => <ListTranscript />
-    },
-    {
-        path: '',
-        exact: true,
-        main: () => <NotFoundPage />
     }
 ];
 
