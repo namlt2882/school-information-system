@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Jumbotron, Button } from 'reactstrap';
 import { isLoggedIn } from '../../services/auth-service';
 import { Redirect } from 'react-router-dom';
+import Component from './component';
 
 class LoginPage extends Component {
     constructor(props) {

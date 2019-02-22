@@ -3,7 +3,7 @@ import './App.css';
 import { Switch, Route, BrowserRouter as Router, Redirect } from 'react-router-dom';
 import routes from './components/menu/routes'
 import MyMenu from './components/menu/my-menu'
-import LoginPage from './components/common-page/login';
+import LoginPage from './components/common/login';
 import { isLoggedIn } from './services/auth-service'
 import NotFoundPage from './components/error-pages/not-found-page';
 
