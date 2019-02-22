@@ -11,12 +11,13 @@ namespace SIS_API.Service
         UserRepository repository = new UserRepository();
         public User InsertUser(User user)
         {
+            user.Status = 1;
             return repository.Insert(user);
         }
 
         public IEnumerable<User> GetAll()
         {
-            return repository.GetAll<User>();
+            return repository.GetAll();
         }
 
         public User GetByUsername(string username)

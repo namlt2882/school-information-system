@@ -29,7 +29,7 @@ namespace SIS_API.Controllers
         public UserVM Get(string username)
         {
             var user = service.GetByUsername(username);
-            return BaseVM<object>.ToModel<UserVM>(user);
+            return user == null ? null : BaseVM<object>.ToModel<UserVM>(user);
         }
 
         // POST: api/User

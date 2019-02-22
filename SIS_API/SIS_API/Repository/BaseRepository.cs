@@ -6,13 +6,14 @@ using System.Web;
 
 namespace SIS_API.Repository
 {
-    public class BaseRepository<T>
+    public class BaseRepository<T> where T : class
     {
-        public static SchoolInformationSystemEntities DbContext = new SchoolInformationSystemEntities();
+        public  static SchoolInformationSystemEntities DbContext;
         DbSet entities;
 
         public BaseRepository()
         {
+            DbContext = new SchoolInformationSystemEntities();
             Type generic = typeof(T);
             if (generic == typeof(User))
             {
@@ -46,15 +47,21 @@ namespace SIS_API.Repository
 
         public T Insert(T t)
         {
-            object result = entities.Add(t);
-            DbContext.SaveChanges();
-            return (T)result;
+            lock (DbContext)
+            {
+                object result = entities.Add(t);
+                DbContext.SaveChanges();
+                return (T)result;
+            }
         }
 
         public void Update(object t)
         {
-            DbContext.Entry(t).State = EntityState.Modified;
-            DbContext.SaveChanges();
+            lock (DbContext)
+            {
+                DbContext.Entry(t).State = EntityState.Modified;
+                DbContext.SaveChanges();
+            }
         }
 
         public T Get(object id)
@@ -62,7 +69,7 @@ namespace SIS_API.Repository
             return (T)entities.Find(id);
         }
 
-        public IEnumerable<T> GetAll<T>() where T : class
+        public IEnumerable<T> GetAll()
         {
             Type type = typeof(T);
             return (from r in entities.Cast<T>() select r);

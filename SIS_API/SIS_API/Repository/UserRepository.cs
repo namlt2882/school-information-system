@@ -9,7 +9,7 @@ namespace SIS_API.Repository
     {
         public User Get(string username)
         {
-            var user = DbContext.Users.Where(x => x.Status == 1).FirstOrDefault();
+            var user = DbContext.Users.Where(x => x.Username == username && x.Status == 1).FirstOrDefault();
             return user;
         }
         public User GetByUsernameAndPassword(string username, string password)

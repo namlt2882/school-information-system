@@ -71,6 +71,9 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swashbuckle.Core.5.6.0\lib\net40\Swashbuckle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -140,6 +143,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -180,6 +186,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\MapperConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
@@ -219,11 +226,17 @@
       <DependentUpon>SchoolModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Filter\AddAuthorizationHeaderParameterOperationFilter.cs" />
     <Compile Include="Filter\AddChallengeOnUnauthorizedResult.cs" />
     <Compile Include="Filter\AuthenticationFailureResult.cs" />
     <Compile Include="Filter\HttpAuthenticationChallengeContextExtensions.cs" />
     <Compile Include="Filter\JwtAuthenticationAttribute.cs" />
     <Compile Include="JWT\JwtManager.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Repository\BaseRepository.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -249,6 +262,7 @@
     </Compile>
     <Compile Include="Service\AuthenticationService.cs" />
     <Compile Include="Service\UserService.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Student.cs">
       <DependentUpon>SchoolModel.tt</DependentUpon>
     </Compile>
@@ -310,6 +324,10 @@
     <Content Include="SchoolModel.edmx.diagram">
       <DependentUpon>SchoolModel.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

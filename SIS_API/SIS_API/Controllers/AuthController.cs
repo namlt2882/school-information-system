@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SIS_API.Filter;
 using SIS_API.JWT;
 using SIS_API.Service;
 using SIS_API.Utility;
@@ -13,11 +14,14 @@ using System.Web.Http;
 
 namespace SIS_API.Controllers
 {
+    [JwtAuthentication]
     public class AuthController : ApiController
     {
         AuthenticationService service = new AuthenticationService();
+        UserService userService = new UserService();
         [Route("auth/Login")]
         [HttpPost]
+        [AllowAnonymous]
         public HttpResponseMessage Login(string username, string password)
         {
 
@@ -37,6 +41,14 @@ namespace SIS_API.Controllers
                 Content = new JsonContent(auth)
             };
         }
+
+        [Route("auth/Info")]
+        [HttpGet]
+        public UserVM GetInfo()
+        {
+            return null;
+        }
+
     }
 
     public class Authentication
