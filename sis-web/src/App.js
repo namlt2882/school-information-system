@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Switch, Route, BrowserRouter as Router, Redirect } from 'react-router-dom';
+import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import routes from './components/menu/routes'
 import MyMenu from './components/menu/my-menu'
 import LoginPage from './components/common/login';
@@ -9,19 +9,26 @@ import NotFoundPage from './components/error-pages/not-found-page';
 
 class App extends Component {
   render() {
+    isLoggedIn(() => { }, () => {
+      var url = window.location.href;
+      var lastPart = url.substr(url.lastIndexOf('/') + 1);
+      if (lastPart != 'login') {
+        window.location.href = '/login';
+      }
+    })
     return (
       <Router>
         <Switch>
-          <Route path='/login' exact={true} component={LoginPage} />
+          <Route path='/login' exact={true} component={({ match, history }) => <LoginPage match={match} history={history} />} />
           {/* <Route path='' exact={false}> */}
-            <div>
-              <MyMenu />
-              <div className="container">
-                <div className="row">
-                  {this.privateContent(routes)}
-                </div>
+          <div>
+            <MyMenu />
+            <div className="container">
+              <div className="row">
+                {this.privateContent(routes)}
               </div>
             </div>
+          </div>
           {/* </Route> */}
           <Route path="*" component={NotFoundPage} />
         </Switch>
@@ -29,9 +36,6 @@ class App extends Component {
     );
   }
   privateContent = (routes) => {
-    if (!isLoggedIn()) {
-      return <Redirect to={{ pathname: '/login' }} />
-    }
     var result = routes.map((route, index) => {
       return (
         <Route

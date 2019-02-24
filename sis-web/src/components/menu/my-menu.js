@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import {
     Collapse, Navbar, NavbarToggler,
     NavbarBrand, Nav, NavItem,
-    NavLink, UncontrolledDropdown, DropdownToggle,
-    DropdownMenu, DropdownItem
+    NavLink
 } from 'reactstrap';
 import { Route, Link } from 'react-router-dom';
 
