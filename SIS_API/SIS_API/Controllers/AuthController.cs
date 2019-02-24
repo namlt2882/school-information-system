@@ -11,9 +11,11 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace SIS_API.Controllers
 {
+
     [JwtAuthentication]
     public class AuthController : ApiController
     {
@@ -22,15 +24,17 @@ namespace SIS_API.Controllers
         [Route("auth/Login")]
         [HttpPost]
         [AllowAnonymous]
-        public HttpResponseMessage Login(string username, string password)
+        public HttpResponseMessage Login([FromBody]UserSM user)
         {
+            //var username = HttpContext.Current.Request.Params["username"];
+            //var username = HttpContext.Current.Request.Params["password"];
 
-            UserVM identity = service.Login(username, password);
+            UserVM identity = service.Login(user.username, user.password);
             if (identity == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
-            var jwt = JwtManager.GenerateToken(username);
+            var jwt = JwtManager.GenerateToken(user.username);
             Authentication auth = new Authentication
             {
                 user = identity,
@@ -49,6 +53,12 @@ namespace SIS_API.Controllers
             return null;
         }
 
+    }
+
+    public class UserSM
+    {
+        public string username { get; set; }
+        public string password { get; set; }
     }
 
     public class Authentication
