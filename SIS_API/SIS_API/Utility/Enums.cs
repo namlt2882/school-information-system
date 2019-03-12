@@ -22,6 +22,19 @@ namespace SIS_API.Utility
     public enum ClassEnums
     {
         STATUS_ACTIVE = 1,
+        STATUS_DISABLE = 0,
+        STATUS_CLOSED = 2
+    }
+
+    public enum ClassMemberEnums
+    {
+        STATUS_ACTIVE = 1,
+        STATUS_DISABLE = 0
+    }
+
+    public enum ClassSubjectEnums
+    {
+        STATUS_ACTIVE = 1,
         STATUS_DISABLE = 0
     }
 
@@ -35,5 +48,11 @@ namespace SIS_API.Utility
         STATUS_ACTIVE = 1,
         STATUS_DISABLE = 0,
         STATUS_GRADUATED = 2
+    }
+    public enum TranscriptEnums
+    {
+        STATUS_ACTIVE = 1,
+        STATUS_DISABLE = 0,
+        STATUS_RESERVE = 2
     }
 }

@@ -12,7 +12,10 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClassSubjectId" Type="int" Nullable="false" />
           <Property Name="StudentId" Type="int" Nullable="false" />
-          <Property Name="ExamId" Type="int" />
+          <Property Name="ExamId" Type="int" Nullable="false" />
+          <Property Name="SubjectName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExamName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PercentRate" Type="int" />
           <Property Name="Score" Type="float" />
           <Property Name="Status" Type="int" Nullable="false" />
         </EntityType>
@@ -22,7 +25,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Manager" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="Manager" Type="nchar" MaxLength="20" />
           <Property Name="InsertDate" Type="datetime" Nullable="false" />
           <Property Name="Status" Type="int" Nullable="false" />
         </EntityType>
@@ -70,7 +73,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Status" Type="int" />
         </EntityType>
         <EntityType Name="Users">
@@ -96,7 +99,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_AcademicTranscript_Examination">
-          <End Role="Examination" Type="Self.Examination" Multiplicity="0..1" />
+          <End Role="Examination" Type="Self.Examination" Multiplicity="1" />
           <End Role="AcademicTranscript" Type="Self.AcademicTranscript" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Examination">
@@ -120,7 +123,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Class_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Class" Type="Self.Class" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
@@ -294,7 +297,10 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClassSubjectId" Type="Int32" Nullable="false" />
           <Property Name="StudentId" Type="Int32" Nullable="false" />
-          <Property Name="ExamId" Type="Int32" />
+          <Property Name="ExamId" Type="Int32" Nullable="false" />
+          <Property Name="SubjectName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExamName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PercentRate" Type="Int32" />
           <Property Name="Score" Type="Double" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ClassSubject" Relationship="SchoolInformationSystemModel.FK_AcademicTranscript_ClassSubject" FromRole="AcademicTranscript" ToRole="ClassSubject" />
@@ -307,7 +313,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Manager" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Manager" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
           <Property Name="InsertDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <NavigationProperty Name="User" Relationship="SchoolInformationSystemModel.FK_Class_Users" FromRole="Class" ToRole="User" />
@@ -367,7 +373,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Int32" />
           <NavigationProperty Name="ClassSubjects" Relationship="SchoolInformationSystemModel.FK_ClassSubject_Subject" FromRole="Subject" ToRole="ClassSubject" />
         </EntityType>
@@ -396,7 +402,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_AcademicTranscript_Examination">
-          <End Type="SchoolInformationSystemModel.Examination" Role="Examination" Multiplicity="0..1" />
+          <End Type="SchoolInformationSystemModel.Examination" Role="Examination" Multiplicity="1" />
           <End Type="SchoolInformationSystemModel.AcademicTranscript" Role="AcademicTranscript" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Examination">
@@ -420,7 +426,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Class_Users">
-          <End Type="SchoolInformationSystemModel.User" Role="User" Multiplicity="1" />
+          <End Type="SchoolInformationSystemModel.User" Role="User" Multiplicity="0..1" />
           <End Type="SchoolInformationSystemModel.Class" Role="Class" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -502,6 +508,9 @@
               <MappingFragment StoreEntitySet="AcademicTranscript">
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="PercentRate" ColumnName="PercentRate" />
+                <ScalarProperty Name="ExamName" ColumnName="ExamName" />
+                <ScalarProperty Name="SubjectName" ColumnName="SubjectName" />
                 <ScalarProperty Name="ExamId" ColumnName="ExamId" />
                 <ScalarProperty Name="StudentId" ColumnName="StudentId" />
                 <ScalarProperty Name="ClassSubjectId" ColumnName="ClassSubjectId" />

@@ -89,6 +89,7 @@
     <Reference Include="System.Security.Claims, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.Claims.4.3.0\lib\net46\System.Security.Claims.dll</HintPath>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -234,9 +235,11 @@
       <DependentUpon>SchoolModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\ExaminationController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\SubjectController.cs" />
+    <Compile Include="Controllers\TranscriptController.cs" />
     <Compile Include="Examination.cs">
       <DependentUpon>SchoolModel.tt</DependentUpon>
     </Compile>
@@ -262,6 +265,7 @@
     <Compile Include="Repository\ExaminationRepository.cs" />
     <Compile Include="Repository\StudentRepository.cs" />
     <Compile Include="Repository\SubjectRepository.cs" />
+    <Compile Include="Repository\TranscriptRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
     <Compile Include="SchoolModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -279,9 +283,11 @@
       <DependentUpon>SchoolModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Service\AuthenticationService.cs" />
+    <Compile Include="Service\ClassService.cs" />
     <Compile Include="Service\ExaminationService.cs" />
     <Compile Include="Service\StudentService.cs" />
     <Compile Include="Service\SubjectService.cs" />
+    <Compile Include="Service\TranscriptService.cs" />
     <Compile Include="Service\UserService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Student.cs">
@@ -296,9 +302,13 @@
     <Compile Include="Utility\Enums.cs" />
     <Compile Include="Utility\JsonContent.cs" />
     <Compile Include="ViewModel\BaseVM.cs" />
+    <Compile Include="ViewModel\ClassMemberVM.cs" />
+    <Compile Include="ViewModel\ClassSubjectVM.cs" />
+    <Compile Include="ViewModel\ClassVM.cs" />
     <Compile Include="ViewModel\ExaminationVM.cs" />
     <Compile Include="ViewModel\StudentVM.cs" />
     <Compile Include="ViewModel\SubjectVM.cs" />
+    <Compile Include="ViewModel\TranscriptVM.cs" />
     <Compile Include="ViewModel\UserVM.cs" />
   </ItemGroup>
   <ItemGroup>

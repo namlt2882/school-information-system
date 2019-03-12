@@ -26,7 +26,7 @@ namespace SIS_API.Service
         public Subject Get(int id)
         {
             var rs = repository.Get(id);
-            if(rs!=null && rs.Status == (int)SubjectEnums.STATUS_DISABLE)
+            if (rs != null && rs.Status == (int)SubjectEnums.STATUS_DISABLE)
             {
                 rs = null;
             }

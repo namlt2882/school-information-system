@@ -21,6 +21,14 @@ namespace SIS_API.Repository
                 .Where(s => s.Status == (int)StudentEnums.STATUS_GRADUATED);
             return students;
         }
+
+        public List<Student> GetStudentOfClass(int classId)
+        {
+            var students = from cm in DbContext.ClassMembers
+                           where cm.ClassId == classId && cm.Status != (int)StudentEnums.STATUS_DISABLE
+                           select cm.Student;
+            return students.ToList();
+        }
         
     }
 }

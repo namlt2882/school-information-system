@@ -17,7 +17,10 @@ namespace SIS_API
         public int Id { get; set; }
         public int ClassSubjectId { get; set; }
         public int StudentId { get; set; }
-        public Nullable<int> ExamId { get; set; }
+        public int ExamId { get; set; }
+        public string SubjectName { get; set; }
+        public string ExamName { get; set; }
+        public Nullable<int> PercentRate { get; set; }
         public Nullable<double> Score { get; set; }
         public int Status { get; set; }
     

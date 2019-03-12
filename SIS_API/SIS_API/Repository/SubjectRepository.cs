@@ -14,12 +14,6 @@ namespace SIS_API.Repository
                 .Where(x => x.Status == (int)SubjectEnums.STATUS_ACTIVE);
             return subjects;
         }
-
-        public Subject Get(int id)
-        {
-            var subject = DbContext.Subjects
-                .Where(x => x.Id == id && x.Status == (int)SubjectEnums.STATUS_ACTIVE).FirstOrDefault();
-            return subject;
-        }
+        
     }
 }
