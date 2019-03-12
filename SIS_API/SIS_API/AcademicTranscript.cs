@@ -14,11 +14,15 @@ namespace SIS_API
     
     public partial class AcademicTranscript
     {
+        public int Id { get; set; }
         public int ClassSubjectId { get; set; }
         public int StudentId { get; set; }
+        public Nullable<int> ExamId { get; set; }
         public Nullable<double> Score { get; set; }
+        public int Status { get; set; }
     
         public virtual ClassSubject ClassSubject { get; set; }
+        public virtual Examination Examination { get; set; }
         public virtual Student Student { get; set; }
     }
 }

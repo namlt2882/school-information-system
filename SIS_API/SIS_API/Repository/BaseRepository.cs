@@ -43,6 +43,10 @@ namespace SIS_API.Repository
             {
                 entities = DbContext.ClassMembers;
             }
+            else if (generic == typeof(Examination))
+            {
+                entities = DbContext.Examinations;
+            }
         }
 
         public T Insert(T t)

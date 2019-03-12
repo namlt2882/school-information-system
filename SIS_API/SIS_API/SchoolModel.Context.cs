@@ -29,6 +29,7 @@ namespace SIS_API
         public virtual DbSet<Class> Classes { get; set; }
         public virtual DbSet<ClassMember> ClassMembers { get; set; }
         public virtual DbSet<ClassSubject> ClassSubjects { get; set; }
+        public virtual DbSet<Examination> Examinations { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
         public virtual DbSet<User> Users { get; set; }

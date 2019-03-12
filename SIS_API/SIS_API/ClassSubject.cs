@@ -21,12 +21,15 @@ namespace SIS_API
         }
     
         public int Id { get; set; }
-        public string ClassId { get; set; }
-        public string SubjectId { get; set; }
+        public int ClassId { get; set; }
+        public int SubjectId { get; set; }
+        public string Teacher { get; set; }
+        public int Status { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AcademicTranscript> AcademicTranscripts { get; set; }
         public virtual Class Class { get; set; }
         public virtual Subject Subject { get; set; }
+        public virtual User User { get; set; }
     }
 }

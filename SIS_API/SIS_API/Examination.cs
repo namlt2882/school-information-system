@@ -12,14 +12,20 @@ namespace SIS_API
     using System;
     using System.Collections.Generic;
     
-    public partial class ClassMember
+    public partial class Examination
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Examination()
+        {
+            this.AcademicTranscripts = new HashSet<AcademicTranscript>();
+        }
+    
         public int Id { get; set; }
-        public int ClassId { get; set; }
-        public int StudentId { get; set; }
+        public string Name { get; set; }
+        public int PercentRate { get; set; }
         public int Status { get; set; }
     
-        public virtual Class Class { get; set; }
-        public virtual Student Student { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AcademicTranscript> AcademicTranscripts { get; set; }
     }
 }

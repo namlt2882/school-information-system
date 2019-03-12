@@ -5,20 +5,23 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="532c8f776e91440981a9b51b546fd5e3" Name="Diagram1" ZoomLevel="55">
-        <EntityTypeShape EntityType="SchoolInformationSystemModel.AcademicTranscript" Width="1.5" PointX="7.5" PointY="0.875" />
-        <EntityTypeShape EntityType="SchoolInformationSystemModel.Class" Width="1.5" PointX="3" PointY="3.625" />
-        <EntityTypeShape EntityType="SchoolInformationSystemModel.ClassMember" Width="1.5" PointX="5.25" PointY="3.875" />
-        <EntityTypeShape EntityType="SchoolInformationSystemModel.ClassSubject" Width="1.5" PointX="5.25" PointY="0.75" />
-        <EntityTypeShape EntityType="SchoolInformationSystemModel.Student" Width="1.5" PointX="5.25" PointY="6.75" />
-        <EntityTypeShape EntityType="SchoolInformationSystemModel.Subject" Width="1.5" PointX="3" PointY="7.375" />
-        <EntityTypeShape EntityType="SchoolInformationSystemModel.User" Width="1.5" PointX="0.75" PointY="3.875" />
+        <EntityTypeShape EntityType="SchoolInformationSystemModel.AcademicTranscript" Width="1.5" PointX="10.5" PointY="3.25" />
+        <EntityTypeShape EntityType="SchoolInformationSystemModel.Class" Width="1.5" PointX="3" PointY="3.375" />
+        <EntityTypeShape EntityType="SchoolInformationSystemModel.ClassMember" Width="1.5" PointX="5.25" PointY="3.5" />
+        <EntityTypeShape EntityType="SchoolInformationSystemModel.ClassSubject" Width="1.5" PointX="8.25" PointY="3.25" />
+        <EntityTypeShape EntityType="SchoolInformationSystemModel.Examination" Width="1.5" PointX="8.25" PointY="8.625" />
+        <EntityTypeShape EntityType="SchoolInformationSystemModel.Student" Width="1.5" PointX="3" PointY="8.375" />
+        <EntityTypeShape EntityType="SchoolInformationSystemModel.Subject" Width="1.5" PointX="6" PointY="0.75" />
+        <EntityTypeShape EntityType="SchoolInformationSystemModel.User" Width="1.5" PointX="0.75" PointY="3.5" />
         <AssociationConnector Association="SchoolInformationSystemModel.FK_AcademicTranscript_ClassSubject" />
+        <AssociationConnector Association="SchoolInformationSystemModel.FK_AcademicTranscript_Examination" />
         <AssociationConnector Association="SchoolInformationSystemModel.FK_AcademicTranscript_Student" />
         <AssociationConnector Association="SchoolInformationSystemModel.FK_Class_Users" />
-        <AssociationConnector Association="SchoolInformationSystemModel.FK_ClassMember_Class" />
-        <AssociationConnector Association="SchoolInformationSystemModel.FK_ClassSubject_Class" />
+        <AssociationConnector Association="SchoolInformationSystemModel.FK_ClassMember_Class1" />
+        <AssociationConnector Association="SchoolInformationSystemModel.FK_ClassSubject_Class1" />
         <AssociationConnector Association="SchoolInformationSystemModel.FK_ClassMember_Student" />
         <AssociationConnector Association="SchoolInformationSystemModel.FK_ClassSubject_Subject" />
+        <AssociationConnector Association="SchoolInformationSystemModel.FK_ClassSubject_Users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
