@@ -17,15 +17,24 @@ class App extends Component {
       }
     })
     return (
-      <Router>
+      <Router style={{ minHeight: '100%' }}>
         <Switch>
           <Route path='/login' exact={true} component={({ match, history }) => <LoginPage match={match} history={history} />} />
           {/* <Route path='' exact={false}> */}
           <div>
             <MyMenu />
-            <div className="container">
-              <div className="row">
-                {this.privateContent(routes)}
+            <div className="container" style={{
+              padding: '20px',
+              zIndex: '0',
+              backgroundColor: 'white',
+              minHeight: '85%',
+              borderRadius: '5px',
+              border: '1px solid #dddfe2'
+            }}>
+              <div className='row justify-content-center align-self-center'>
+                <div className='col-sm-12 row'>
+                  {this.privateContent(routes)}
+                </div>
               </div>
             </div>
           </div>

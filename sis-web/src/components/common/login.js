@@ -4,6 +4,7 @@ import { isLoggedIn, AuthService } from '../../services/auth-service';
 import { Redirect } from 'react-router-dom';
 import Component from './component';
 import { FormGroup, Label, Input } from 'reactstrap';
+import { withRouter } from 'react-router-dom'
 
 class LoginPage extends Component {
     constructor(props) {
@@ -29,11 +30,7 @@ class LoginPage extends Component {
     login() {
         AuthService.login(this.state.username, this.state.password)
             .then(res => {
-                let token = res.data.token;
-                let role = res.data.user.Role;
-                localStorage.setItem('access_token', token);
-                localStorage.setItem('role', role);
-                window.location.href = '/'
+                this.props.history.push('/')
             }).catch(err => {
                 alert('Wrong username or password!')
             })
@@ -74,4 +71,4 @@ class LoginPage extends Component {
     }
 }
 
-export default LoginPage;
+export default withRouter(LoginPage);
