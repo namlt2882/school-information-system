@@ -12,4 +12,10 @@ namespace SIS_API.ViewModel
         public int Role { get; set; }
         public int Status { get; set; }
     }
+
+    public class TeacherVM : BaseVM<User>
+    {
+        public string Username { get; set; }
+        public string Name { get; set; }
+    }
 }

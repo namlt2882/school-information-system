@@ -14,6 +14,16 @@ namespace SIS_API.App_Start
             Mapper.Initialize((config) =>
             {
                 config.CreateMap<User, UserVM>().ReverseMap();
+                config.CreateMap<User, TeacherVM>().ReverseMap();
+
+                config.CreateMap<Subject, SubjectVM>().ReverseMap();
+                config.CreateMap<Examination, ExaminationVM>().ReverseMap();
+                config.CreateMap<Student, StudentVM>().ReverseMap();
+
+                config.CreateMap<Class, ClassVM>().ReverseMap();
+                config.CreateMap<Class, ClassFM>().ReverseMap();
+
+                config.CreateMap<AcademicTranscript, TranscriptVM>().ReverseMap();
             });
         }
     }

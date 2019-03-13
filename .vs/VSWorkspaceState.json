@@ -1,6 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\SIS_API",
+    "\\SIS_API\\SIS_API",
+    "\\SIS_API\\SIS_API\\Filter",
+    "\\SIS_API\\SIS_API\\Utility"
   ],
+  "SelectedNode": "\\SIS_API\\SIS_API\\Filter\\JwtAuthenticationAttribute.cs",
   "PreviewInSolutionExplorer": false
 }

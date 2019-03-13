@@ -20,7 +20,7 @@ namespace SIS_API
             this.ClassSubjects = new HashSet<ClassSubject>();
         }
     
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public Nullable<int> Status { get; set; }
     

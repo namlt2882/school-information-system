@@ -14,7 +14,8 @@ namespace SIS_API
     
     public partial class ClassMember
     {
-        public string ClassId { get; set; }
+        public int Id { get; set; }
+        public int ClassId { get; set; }
         public int StudentId { get; set; }
         public int Status { get; set; }
     

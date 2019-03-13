@@ -1,6 +1,6 @@
 import React from 'react';
 import NotFoundPage from './../error-pages/not-found-page'
-import DashBoard from '../common-page/dashboard';
+import DashBoard from '../common/dashboard';
 import ListUser from '../user-pages/list-user';
 import ListSubject from '../subject-pages/list-subject';
 import ListStudent from '../student-pages/list-student';
@@ -31,11 +31,6 @@ const routes = [
         path: '/transcript',
         exact: false,
         main: () => <ListTranscript />
-    },
-    {
-        path: '',
-        exact: true,
-        main: () => <NotFoundPage />
     }
 ];
 

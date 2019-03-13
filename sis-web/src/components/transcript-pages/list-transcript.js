@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import Component from '../common/component';
 
 class ListTranscript extends Component {
     constructor(props) {

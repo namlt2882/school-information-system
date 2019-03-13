@@ -1,4 +1,5 @@
 ﻿using SIS_API.Repository;
+using SIS_API.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,8 @@ namespace SIS_API.Service
         UserRepository repository = new UserRepository();
         public User InsertUser(User user)
         {
-            user.Status = 1;
+            user.Status = (int)UserEnums.STATUS_ACTIVE;
+            user.Role = (int)UserEnums.ROLE_TEACHER;
             return repository.Insert(user);
         }
 
@@ -36,8 +38,9 @@ namespace SIS_API.Service
         public void Delete(string username)
         {
             User origin = repository.Get(username);
-            origin.Status = 0;
+            origin.Status = (int)UserEnums.STATUS_DISABLE;
             repository.Update(origin);
         }
+        
     }
 }

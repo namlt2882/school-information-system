@@ -8,12 +8,15 @@ namespace SIS_API.Repository
 {
     public class BaseRepository<T> where T : class
     {
-        public  static SchoolInformationSystemEntities DbContext;
+        public static SchoolInformationSystemEntities DbContext = new SchoolInformationSystemEntities();
         DbSet entities;
 
         public BaseRepository()
         {
-            DbContext = new SchoolInformationSystemEntities();
+            lock (DbContext)
+            {
+                DbContext = new SchoolInformationSystemEntities();
+            }
             Type generic = typeof(T);
             if (generic == typeof(User))
             {
@@ -42,6 +45,10 @@ namespace SIS_API.Repository
             else if (generic == typeof(ClassMember))
             {
                 entities = DbContext.ClassMembers;
+            }
+            else if (generic == typeof(Examination))
+            {
+                entities = DbContext.Examinations;
             }
         }
 
