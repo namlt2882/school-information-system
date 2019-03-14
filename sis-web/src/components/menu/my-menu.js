@@ -10,11 +10,13 @@ import '../common/common.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
 	faTachometerAlt, faUsers, faBook,
-	faUserGraduate, faScroll, faUserCircle
+	faUserGraduate, faScroll, faUserCircle,
+	faStream, faChalkboard
 } from '@fortawesome/free-solid-svg-icons'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { AuthService } from '../../services/auth-service';
-library.add(faTachometerAlt, faUsers, faBook, faUserGraduate, faScroll, faUserCircle);
+library.add(faTachometerAlt, faUsers, faBook, faUserGraduate,
+	faScroll, faUserCircle, faStream, faChalkboard);
 
 class MyMenu extends Component {
 	constructor(props) {
@@ -126,14 +128,21 @@ const menus = [
 		to: '/',
 		exact: true,
 		icon: 'tachometer-alt',
-		roles: [1]
+		roles: [1, 2]
 	},
 	{
-		name: 'User',
-		to: '/user',
+		name: 'Teacher',
+		to: '/teacher',
 		exact: false,
 		icon: 'users',
 		roles: [1]
+	},
+	{
+		name: 'Class',
+		to: '/class',
+		exact: false,
+		icon: 'chalkboard',
+		roles: [1, 2]
 	},
 	{
 		name: 'Subject',
@@ -141,6 +150,13 @@ const menus = [
 		exact: false,
 		icon: 'book',
 		roles: [1]
+	},
+	{
+		name: 'Exams',
+		to: '/exam',
+		exact: false,
+		icon: 'stream',
+		roles: [1, 2]
 	},
 	{
 		name: 'Student',
@@ -154,6 +170,6 @@ const menus = [
 		to: '/transcript',
 		exact: false,
 		icon: 'scroll',
-		roles: [1]
+		roles: [1, 2]
 	}
 ];

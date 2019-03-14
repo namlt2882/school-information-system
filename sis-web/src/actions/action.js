@@ -1,0 +1,2 @@
+export const SET_TEACHERS = 'SET_TEACHERS'
+export const ADD_TEACHER = 'ADD_TEACHER'
