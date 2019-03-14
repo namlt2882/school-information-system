@@ -15,6 +15,7 @@ namespace SIS_API.App_Start
             {
                 config.CreateMap<User, UserVM>().ReverseMap();
                 config.CreateMap<User, TeacherVM>().ReverseMap();
+                config.CreateMap<User, UserCM>().ReverseMap();
 
                 config.CreateMap<Subject, SubjectVM>().ReverseMap();
                 config.CreateMap<Examination, ExaminationVM>().ReverseMap();

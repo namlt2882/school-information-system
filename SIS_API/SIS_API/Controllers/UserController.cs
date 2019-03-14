@@ -10,7 +10,7 @@ using System.Web.Http;
 
 namespace SIS_API.Controllers
 {
-    [JwtAuthentication]
+    [AllowAnonymous]
     public class UserController : ApiController
     {
         UserService service = new UserService();
@@ -35,20 +35,20 @@ namespace SIS_API.Controllers
         // POST: api/User
         [HttpPost]
         [Route("api/User")]
-        public UserVM Post([FromBody]User value)
+        public UserVM Post([FromBody]UserCM value)
         {
             UserService service = new UserService();
-            User newUser = service.InsertUser(value);
+            User newUser = service.InsertUser(value.ToEntity());
             return BaseVM<object>.ToModel<UserVM>(newUser);
         }
 
         // PUT: api/User/5
         [HttpPut]
         [Route("api/User/{username}")]
-        public void Put(string username, [FromBody]User value)
+        public void Put(string username, [FromBody]UserCM value)
         {
             value.Username = username;
-            service.Update(value);
+            service.Update(value.ToEntity());
         }
 
         // DELETE: api/User/5
@@ -59,4 +59,5 @@ namespace SIS_API.Controllers
             service.Delete(username);
         }
     }
+
 }
