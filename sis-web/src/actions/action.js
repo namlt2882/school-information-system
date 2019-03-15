@@ -1,2 +1,7 @@
+//teacher
 export const SET_TEACHERS = 'SET_TEACHERS'
 export const ADD_TEACHER = 'ADD_TEACHER'
+
+//subject
+export const SET_SUBJECTS = 'SET_SUBJECTS'
+export const ADD_SUBJECT = 'ADD_SUBJECT'
