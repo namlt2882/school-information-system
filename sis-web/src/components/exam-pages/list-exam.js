@@ -1,16 +1,110 @@
 import React from 'react';
 import Component from '../common/component';
-import { Container, Header } from 'semantic-ui-react';
-
+import { connect } from 'react-redux'
+import { available1, PrimaryLoadingPage } from '../common/loading-page';
+import { MDBDataTable } from 'mdbreact'
+import { Container, Header, Button } from 'semantic-ui-react';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { ExamAction } from '../../actions/exam-action';
+import { ExamService } from '../../services/exam-service';
+import AddExam from './add-exam';
 class ListExam extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            maxLoading: 1,
+            openModal: false,
+            modalContent: null
+        }
     }
+    pushData(exams = this.props.exams) {
+        let data1 = { ...data };
+        data1.rows = [];
+        let rows = exams.map((e, i) => {
+            return {
+                No: i + 1,
+                Name: e.Name,
+                Percent: `${e.PercentRate} %`,
+                Action: null
+            }
+        })
+        data1.rows = rows;
+        return data1;
+    }
+    componentDidMount() {
+        available1();
+        ExamService.getAll().then(res => {
+            this.props.setExams(res.data);
+            this.incrementLoading();
+        })
+    }
+
     render() {
-        return (<div>
-        </div>);
+        if (this.isLoading()) {
+            return <PrimaryLoadingPage />
+        }
+        let data = this.pushData(this.props.subjects);
+        return (<Container>
+            <Header className='text-center'>Examinations</Header>
+            <div className='col-sm-12'>
+                <AddExam />
+            </div>
+            <div className='col-sm-12 row justify-content-center align-self-center'>
+                <div className='col-sm-8'>
+                    {data.rows.length > 0 ? <MDBDataTable
+                        className='hide-last-row'
+                        striped
+                        bordered
+                        data={data} /> : <span>Found 0 exams!</span>}
+                </div>
+            </div>
+            <Modal isOpen={this.state.openModal} className='big-modal'>
+                <ModalBody>
+                    {this.state.modalContent}
+                </ModalBody>
+                <ModalFooter>
+                    <Button color='secondary' onClick={() => {
+                        this.setState({
+                            openModal: false,
+                            modalContent: null
+                        })
+                    }}>Close</Button>
+                </ModalFooter>
+            </Modal>
+        </Container>);
     }
 }
 
-export default ListExam;
+const data = {
+    columns: [
+        {
+            label: '#',
+            field: 'No'
+        },
+        {
+            label: 'Exam',
+            field: 'Name'
+        },
+        {
+            label: 'Percent in transcript',
+            field: 'Percent'
+        },
+        {
+            label: '',
+            field: 'Action'
+        }
+    ],
+    rows: []
+}
+
+const mapStateToProps = (state) => ({
+    exams: state.exams
+})
+
+const mapDispatchToProps = dispatch => ({
+    setExams: (list) => {
+        dispatch(ExamAction.setExams(list));
+    }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListExam);

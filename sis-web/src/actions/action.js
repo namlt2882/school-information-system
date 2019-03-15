@@ -5,3 +5,7 @@ export const ADD_TEACHER = 'ADD_TEACHER'
 //subject
 export const SET_SUBJECTS = 'SET_SUBJECTS'
 export const ADD_SUBJECT = 'ADD_SUBJECT'
+
+//exam
+export const SET_EXAMS = 'SET_EXAMS'
+export const ADD_EXAM = 'ADD_EXAM'

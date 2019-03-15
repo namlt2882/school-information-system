@@ -2,34 +2,36 @@ import React from 'react';
 import { Form, Button } from 'semantic-ui-react';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { connect } from 'react-redux'
-import { SubjectService } from '../../services/subject-service';
-import { SubjectAction } from '../../actions/subject-action';
+import { ExamAction } from '../../actions/exam-action';
+import { ExamService } from '../../services/exam-service';
 
-class AddSubject extends React.Component {
+class AddExam extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             isOpen: false,
             name: null,
+            percent: 0,
             loading: false
         }
         this.openModal = this.openModal.bind(this);
-        this.addSubject = this.addSubject.bind(this);
+        this.addExam = this.addExam.bind(this);
     }
     openModal() {
         this.setState({
             isOpen: true,
-            name: null
+            name: null,
+            percent: 0
         });
     }
-    addSubject() {
+    addExam() {
         this.setState({ loading: true });
         let data = {
             Name: this.state.name
         }
-        SubjectService.addSubject(data).then(res => {
+        ExamService.addExam(data).then(res => {
             let rs = res.data;
-            this.props.addSubject(rs);
+            this.props.addExam(rs);
             this.setState({ isOpen: false, loading: false });
         }).catch(err => {
             alert('Service unavailable!');
@@ -37,20 +39,31 @@ class AddSubject extends React.Component {
         })
     }
     render() {
+        let max = 100 - this.props.exams.reduce((acc, e) => { return acc + e.PercentRate }, 0);
         return (<div>
             <Button color='primary' onClick={this.openModal}>Add</Button>
             <Modal isOpen={this.state.isOpen}>
                 <ModalHeader className='text-center'>
-                    Add new subject
+                    Add new Examination
                 </ModalHeader>
                 <ModalBody>
-                    <Form onSubmit={this.addSubject} loading={this.state.loading}>
+                    <Form onSubmit={this.addExam} loading={this.state.loading}>
                         <Form.Field>
                             <label>Name</label>
                             <input type='text' placeholder='Name' required
                                 value={this.state.name}
                                 onChange={(e) => {
                                     this.setState({ name: e.target.value });
+                                }} />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Percent in transcript</label>
+                            <input type='number' required
+                                value={this.state.percent}
+                                min={0} max={max}
+                                onChange={(e) => {
+                                    let value = parseInt(e.target.value);
+                                    this.setState({ percent: value });
                                 }} />
                         </Form.Field>
                         <button ref='btn' style={{ display: 'none' }}></button>
@@ -70,13 +83,13 @@ class AddSubject extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    subjects: state.subjects
+    exams: state.exams
 })
 
 const mapDispatchToProps = dispatch => ({
-    addSubject: (subject) => {
-        dispatch(SubjectAction.addSubject(subject));
+    addExam: (exam) => {
+        dispatch(ExamAction.addExam(exam));
     }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddSubject);
+export default connect(mapStateToProps, mapDispatchToProps)(AddExam);
