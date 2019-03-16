@@ -14,7 +14,7 @@ class TeacherDetail extends Component {
         let teacher = this.props.teacher;
         return (<div className='col-sm-12 row justify-content-center align-self-center'>
             <div className='col-sm-5'>
-                <div><Icon name='info' />Teacher Info</div>
+                <div><Icon name='info' />Thông tin giáo viên</div>
                 <Divider />
                 <table>
                     <tbody>
@@ -23,14 +23,14 @@ class TeacherDetail extends Component {
                             <td>{teacher.Username}</td>
                         </tr>
                         <tr>
-                            <td><b>Name</b>:</td>
+                            <td><b>Họ và tên</b>:</td>
                             <td>{teacher.Name}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div className='col-sm-7'>
-                <div className='text-center'><Icon name='group' />Classes</div>
+                <div className='text-center'><Icon name='group' />Lớp hiện tại</div>
                 <Divider />
                 <div>
 

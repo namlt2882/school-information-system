@@ -42,7 +42,7 @@ class ListTeacher extends Component {
                 Name: t.Name,
                 Subject: subject ? subject.Name : '',
                 HomeroomClass: t.HomeroomClass.map((hc, i) => `${i > 0 ? ', ' : ''}${hc.Name}`),
-                TeachingClassQuantity: `${t.TeachingClassQuantity} classes`,
+                TeachingClassQuantity: t.TeachingClassQuantity > 0 ? `${t.TeachingClassQuantity} lớp` : '(không)',
                 Action: <Button color='primary' onClick={() => {
                     let modalContent = <TeacherDetail teacher={t} />
                     this.setState({
@@ -62,7 +62,7 @@ class ListTeacher extends Component {
         let data = this.pushData(this.props.teachers);
         return (
             <Container>
-                <Header className='text-center'>Giáo viên</Header>
+                <Header className='text-center'>Danh sách Giáo viên</Header>
                 <div className='col-sm-12'>
                     <AddTeacher />
                 </div>

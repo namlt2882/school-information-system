@@ -45,7 +45,7 @@ class ListExam extends Component {
         }
         let data = this.pushData(this.props.exams);
         return (<Container>
-            <Header className='text-center'>Examinations</Header>
+            <Header className='text-center'>Danh sách Kì thi</Header>
             <div className='col-sm-12'>
                 <AddExam />
             </div>
@@ -55,7 +55,7 @@ class ListExam extends Component {
                         className='hide-last-row'
                         striped
                         bordered
-                        data={data} /> : <span>Found 0 exams!</span>}
+                        data={data} /> : <span>Không có kì thi nào!</span>}
                 </div>
             </div>
             <Modal isOpen={this.state.openModal} className='big-modal'>
@@ -68,7 +68,7 @@ class ListExam extends Component {
                             openModal: false,
                             modalContent: null
                         })
-                    }}>Close</Button>
+                    }}>Đóng</Button>
                 </ModalFooter>
             </Modal>
         </Container>);
@@ -82,11 +82,11 @@ const data = {
             field: 'No'
         },
         {
-            label: 'Exam',
+            label: 'Tên kì thi',
             field: 'Name'
         },
         {
-            label: 'Percent in transcript',
+            label: 'Trọng số trên tổng điểm',
             field: 'Percent'
         },
         {

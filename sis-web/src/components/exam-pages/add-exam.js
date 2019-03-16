@@ -42,15 +42,15 @@ class AddExam extends React.Component {
     render() {
         let max = 100 - this.props.exams.reduce((acc, e) => { return acc + e.PercentRate }, 0);
         return (<div>
-            <Button color='primary' onClick={this.openModal}>Add</Button>
+            <Button color='primary' onClick={this.openModal}>Thêm kì thi</Button>
             <Modal isOpen={this.state.isOpen}>
                 <ModalHeader className='text-center'>
-                    Add new Examination
+                    Thêm kì thi
                 </ModalHeader>
                 <ModalBody>
                     <Form onSubmit={this.addExam} loading={this.state.loading}>
                         <Form.Field>
-                            <label>Name</label>
+                            <label>Tên</label>
                             <input type='text' placeholder='Name' required
                                 value={this.state.name}
                                 onChange={(e) => {
@@ -58,7 +58,7 @@ class AddExam extends React.Component {
                                 }} />
                         </Form.Field>
                         <Form.Field>
-                            <label>Percent in transcript</label>
+                            <label>Trọng số trên tổng điểm</label>
                             <input type='number' required
                                 value={this.state.percent}
                                 min={0} max={max}
@@ -76,7 +76,7 @@ class AddExam extends React.Component {
                     }}>OK</Button>
                     <Button color='secondary' onClick={() => {
                         this.setState({ isOpen: false });
-                    }}>Cancel</Button>
+                    }}>Hủy</Button>
                 </ModalFooter>
             </Modal>
         </div>);

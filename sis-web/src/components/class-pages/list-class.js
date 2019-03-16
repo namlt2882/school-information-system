@@ -63,7 +63,7 @@ class ListClass extends Component {
         }
         let data = this.pushData(this.props.classes);
         return (<Container>
-            <Header className='text-center'>Classes</Header>
+            <Header className='text-center'>Danh sách Lớp học</Header>
             <div className='col-sm-12'>
                 <AddClass />
             </div>

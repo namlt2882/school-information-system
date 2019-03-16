@@ -102,16 +102,16 @@ class MyProfile extends React.Component {
 					</DropdownToggle>
 					<DropdownMenu className='nav-icon-panel row justify-content-center align-self-center'>
 						<div className='col-sm-10' style={{ cursor: 'default' }}>
-							Hi, <b>{localStorage.getItem('name')}</b><br />
+							Chào, <b>{localStorage.getItem('name')}</b><br />
 						</div>
 						<DropdownItem>
-							My profile
+							Thông tin cá nhân
                             </DropdownItem>
 						<DropdownItem onClick={() => {
 							AuthService.logout();
 						}}>
 							<FontAwesomeIcon icon='sign-out-alt' color='black' size='sm' />
-							Logout
+							Đăng xuất
                         </DropdownItem>
 					</DropdownMenu>
 				</Dropdown>
@@ -124,49 +124,49 @@ export default MyMenu;
 
 const menus = [
 	{
-		name: 'Dashboard',
+		name: 'Trang chủ',
 		to: '/',
 		exact: true,
 		icon: 'tachometer-alt',
 		roles: [1, 2]
 	},
 	{
-		name: 'Teacher',
+		name: 'Giáo viên',
 		to: '/teacher',
 		exact: false,
 		icon: 'users',
 		roles: [1]
 	},
 	{
-		name: 'Class',
+		name: 'Lớp',
 		to: '/class',
 		exact: false,
 		icon: 'chalkboard',
 		roles: [1, 2]
 	},
 	{
-		name: 'Subject',
+		name: 'Môn học',
 		to: '/subject',
 		exact: false,
 		icon: 'book',
 		roles: [1]
 	},
 	{
-		name: 'Exams',
+		name: 'Kì thi',
 		to: '/exam',
 		exact: false,
 		icon: 'stream',
 		roles: [1, 2]
 	},
 	{
-		name: 'Student',
+		name: 'Học sinh',
 		to: '/student',
 		exact: false,
 		icon: 'user-graduate',
 		roles: [1]
 	},
 	{
-		name: 'Academic transcript',
+		name: 'Bảng điểm',
 		to: '/transcript',
 		exact: false,
 		icon: 'scroll',

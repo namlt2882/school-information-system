@@ -31,7 +31,7 @@ class ListSubject extends Component {
                         openModal: true,
                         modalContent: modalContent
                     })
-                }}>Detail</Button>
+                }}>Chi tiết</Button>
             }
         })
         data1.rows = rows;
@@ -51,7 +51,7 @@ class ListSubject extends Component {
         }
         let data = this.pushData(this.props.subjects);
         return (<Container>
-            <Header className='text-center'>Subject</Header>
+            <Header className='text-center'>Danh sách Môn học</Header>
             <div className='col-sm-12'>
                 <AddSubject />
             </div>
@@ -61,7 +61,7 @@ class ListSubject extends Component {
                         className='hide-last-row'
                         striped
                         bordered
-                        data={data} /> : <span>Found 0 subjects!</span>}
+                        data={data} /> : <span>Không thấy môn học nào!</span>}
                 </div>
             </div>
             <Modal isOpen={this.state.openModal} className='big-modal'>
@@ -74,7 +74,7 @@ class ListSubject extends Component {
                             openModal: false,
                             modalContent: null
                         })
-                    }}>Close</Button>
+                    }}>Hủy</Button>
                 </ModalFooter>
             </Modal>
         </Container>);
@@ -88,7 +88,7 @@ const data = {
             field: 'No'
         },
         {
-            label: 'Subject',
+            label: 'Tên môn học',
             field: 'Name'
         },
         {

@@ -38,15 +38,15 @@ class AddSubject extends React.Component {
     }
     render() {
         return (<div>
-            <Button color='primary' onClick={this.openModal}>Add</Button>
+            <Button color='primary' onClick={this.openModal}>Thêm môn học</Button>
             <Modal isOpen={this.state.isOpen}>
                 <ModalHeader className='text-center'>
-                    Add new subject
+                    Thêm môn học
                 </ModalHeader>
                 <ModalBody>
                     <Form onSubmit={this.addSubject} loading={this.state.loading}>
                         <Form.Field>
-                            <label>Name</label>
+                            <label>Tên</label>
                             <input type='text' placeholder='Name' required
                                 value={this.state.name}
                                 onChange={(e) => {
@@ -62,7 +62,7 @@ class AddSubject extends React.Component {
                     }}>OK</Button>
                     <Button color='secondary' onClick={() => {
                         this.setState({ isOpen: false });
-                    }}>Cancel</Button>
+                    }}>Hủy</Button>
                 </ModalFooter>
             </Modal>
         </div>);
