@@ -1,4 +1,5 @@
 ﻿using SIS_API.Service;
+using SIS_API.Utility;
 using SIS_API.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,15 @@ namespace SIS_API.Controllers
         public IEnumerable<ClassVM> GetAll()
         {
             var list = service.GetAll();
-            return list.Select(i => BaseVM<object>.ToModel<ClassVM>(i));
+            return list.Select(i =>
+            {
+                var vm = BaseVM<object>.ToModel<ClassVM>(i);
+                vm.SubjectQuantity = i.ClassSubjects
+                .Where(cs => cs.Status != (int)ClassSubjectEnums.STATUS_DISABLE).Count();
+                vm.StudentQuantity = i.ClassMembers
+                .Where(cm => cm.Status != (int)ClassMemberEnums.STATUS_DISABLE).Count();
+                return vm;
+            });
         }
 
         [HttpGet]
@@ -131,6 +140,11 @@ namespace SIS_API.Controllers
     public class AddSubjectModel
     {
         public int ClassId { get; set; }
-        public List<int> SubjectIds { get; set; }
+        public List<ClassSubjectModel> SubjectIds { get; set; }
+    }
+    public class ClassSubjectModel
+    {
+        public int SubjectId { get; set; }
+        public string TeacherId { get; set; }
     }
 }

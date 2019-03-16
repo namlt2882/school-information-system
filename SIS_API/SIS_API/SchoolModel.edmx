@@ -84,6 +84,7 @@
           <Property Name="Password" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Role" Type="int" Nullable="false" />
+          <Property Name="SubjectId" Type="int" />
           <Property Name="Status" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_AcademicTranscript_ClassSubject">
@@ -388,6 +389,7 @@
           <Property Name="Status" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Classes" Relationship="SchoolInformationSystemModel.FK_Class_Users" FromRole="User" ToRole="Class" />
           <NavigationProperty Name="ClassSubjects" Relationship="SchoolInformationSystemModel.FK_ClassSubject_Users" FromRole="User" ToRole="ClassSubject" />
+          <Property Name="SubjectId" Type="Int32" />
         </EntityType>
         <Association Name="FK_AcademicTranscript_ClassSubject">
           <End Type="SchoolInformationSystemModel.ClassSubject" Role="ClassSubject" Multiplicity="1" />
@@ -584,6 +586,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="SchoolInformationSystemModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="SubjectId" ColumnName="SubjectId" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

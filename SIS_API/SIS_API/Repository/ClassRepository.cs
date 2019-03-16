@@ -11,8 +11,9 @@ namespace SIS_API.Repository
 
         public IEnumerable<Class> GetAll()
         {
-            var classess = DbContext.Classes
-                .Where(x => x.Status == (int)ClassEnums.STATUS_ACTIVE);
+            var classess = from c in DbContext.Classes
+                           where c.Status != (int)ClassEnums.STATUS_DISABLE
+                           select c;
             return classess;
         }
 
@@ -63,6 +64,23 @@ namespace SIS_API.Repository
                       && cs.Status == (int)ClassSubjectEnums.STATUS_ACTIVE
                       select cs;
             return css.ToList();
+        }
+
+        public IQueryable<ClassSubject> GetTeacherCurrentClass(string teacherName)
+        {
+            var css = from cs in DbContext.ClassSubjects
+                      where cs.Teacher == teacherName && cs.Status == (int)ClassSubjectEnums.STATUS_ACTIVE
+                      && cs.Class.Status == (int)ClassEnums.STATUS_ACTIVE
+                      select cs;
+            return css;
+        }
+
+        public IQueryable<Class> GetHomeroomClass(string teacherName)
+        {
+            var classes = from c in DbContext.Classes
+                          where c.Manager == teacherName && c.Status == (int)ClassSubjectEnums.STATUS_ACTIVE
+                          select c;
+            return classes;
         }
 
     }

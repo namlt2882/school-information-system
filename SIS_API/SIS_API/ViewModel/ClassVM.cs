@@ -13,6 +13,8 @@ namespace SIS_API.ViewModel
         public string Manager { get; set; }
         public System.DateTime InsertDate { get; set; }
         public int Status { get; set; }
+        public int SubjectQuantity { get; set; }
+        public int StudentQuantity { get; set; }
     }
 
     public class ClassFM : ClassVM

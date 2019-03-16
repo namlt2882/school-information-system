@@ -1,4 +1,5 @@
-﻿using SIS_API.Repository;
+﻿using SIS_API.Controllers;
+using SIS_API.Repository;
 using SIS_API.Utility;
 using System;
 using System.Collections.Generic;
@@ -118,14 +119,14 @@ namespace SIS_API.Service
             return rs;
         }
 
-        public IEnumerable<ClassSubject> AddSubjectToClass(int classId, List<int> subjectIds)
+        public IEnumerable<ClassSubject> AddSubjectToClass(int classId, List<ClassSubjectModel> subjectIds)
         {
             var origin = repository.Get(classId);
             var rs = new List<ClassSubject>();
             //add subject to class
             subjectIds.ForEach(i =>
             {
-                var found = origin.ClassSubjects.Where(cs => cs.SubjectId == i).FirstOrDefault();
+                var found = origin.ClassSubjects.Where(cs => cs.SubjectId == i.SubjectId).FirstOrDefault();
                 if (found == null)
                 {
                     var classSubject = new ClassSubject
@@ -133,7 +134,8 @@ namespace SIS_API.Service
                         Id = 0,
                         Status = (int)ClassSubjectEnums.STATUS_ACTIVE,
                         ClassId = classId,
-                        SubjectId = i
+                        SubjectId = i.SubjectId,
+                        Teacher = i.TeacherId
                     };
                     origin.ClassSubjects.Add(classSubject);
                     rs.Add(classSubject);
@@ -141,6 +143,7 @@ namespace SIS_API.Service
                 else if (found.Status == (int)ClassSubjectEnums.STATUS_DISABLE)
                 {
                     found.Status = (int)ClassSubjectEnums.STATUS_ACTIVE;
+                    found.Teacher = i.TeacherId;
                     rs.Add(found);
                 }
             });
@@ -156,17 +159,18 @@ namespace SIS_API.Service
             return rs;
         }
 
-        public IEnumerable<ClassSubject> RemoveSubjectFromClass(int classId, List<int> subjectIds)
+        public IEnumerable<ClassSubject> RemoveSubjectFromClass(int classId, List<ClassSubjectModel> subjectIds)
         {
             var rs = new List<ClassSubject>();
             var origin = repository.Get(classId);
             //remove subject
             subjectIds.ForEach(i =>
             {
-                var found = origin.ClassSubjects.Where(cs => cs.SubjectId == i).FirstOrDefault();
+                var found = origin.ClassSubjects.Where(cs => cs.SubjectId == i.SubjectId).FirstOrDefault();
                 if (found != null && found.Status != (int)ClassSubjectEnums.STATUS_DISABLE)
                 {
                     found.Status = (int)ClassSubjectEnums.STATUS_DISABLE;
+                    found.Teacher = null;
                     rs.Add(found);
                 }
             });
@@ -175,6 +179,21 @@ namespace SIS_API.Service
             var transcriptService = new TranscriptService();
             transcriptService.DeleteSubjectFromTranscript(classId, rs);
             return rs;
+        }
+
+        public int GetTeacherCurrentClassQuantity(string teacherName)
+        {
+            return repository.GetTeacherCurrentClass(teacherName).Count();
+        }
+
+        public List<ClassSubject> GetTeacherCurrentClass(string teacherName)
+        {
+            return repository.GetTeacherCurrentClass(teacherName).ToList();
+        }
+
+        public List<Class> GetHomeroomClass(string teacherName)
+        {
+            return repository.GetHomeroomClass(teacherName).ToList();
         }
     }
 }

@@ -32,6 +32,7 @@ namespace SIS_API.Service
             User origin = repository.Get(user.Username);
             origin.Password = user.Password;
             origin.Name = user.Name;
+            origin.SubjectId = user.SubjectId;
             repository.Update(origin);
         }
 

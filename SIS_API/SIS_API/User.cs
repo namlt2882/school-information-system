@@ -26,6 +26,7 @@ namespace SIS_API
         public string Name { get; set; }
         public int Role { get; set; }
         public int Status { get; set; }
+        public Nullable<int> SubjectId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Class> Classes { get; set; }

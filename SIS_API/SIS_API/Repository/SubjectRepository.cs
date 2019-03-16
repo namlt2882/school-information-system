@@ -11,7 +11,7 @@ namespace SIS_API.Repository
         public IEnumerable<Subject> GetAll()
         {
             var subjects = DbContext.Subjects
-                .Where(x => x.Status == (int)SubjectEnums.STATUS_ACTIVE);
+                .Where(x => x.Status != (int)SubjectEnums.STATUS_DISABLE);
             return subjects;
         }
         

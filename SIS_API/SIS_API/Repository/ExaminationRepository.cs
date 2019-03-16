@@ -11,7 +11,7 @@ namespace SIS_API.Repository
         public List<Examination> GetAll()
         {
             var exams = DbContext.Examinations
-                .Where(x => x.Status == (int)ExaminationEnums.STATUS_ACTIVE);
+                .Where(x => x.Status != (int)ExaminationEnums.STATUS_DISABLE);
             return exams.ToList();
         }
 
