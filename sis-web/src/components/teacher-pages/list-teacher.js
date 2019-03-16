@@ -9,11 +9,13 @@ import { MDBDataTable } from 'mdbreact'
 import { TeacherService } from '../../services/teacher-service';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import TeacherDetail from './teacher-detail';
+import { SubjectAction } from '../../actions/subject-action';
+import { SubjectService } from '../../services/subject-service';
 class ListTeacher extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            maxLoading: 1,
+            maxLoading: 2,
             openModal: false,
             modalContent: null
         }
@@ -25,21 +27,29 @@ class ListTeacher extends Component {
             this.props.setTeachers(res.data);
             this.incrementLoading();
         })
+        SubjectService.getAll().then(res => {
+            this.props.setSubjects(res.data);
+            this.incrementLoading();
+        })
     }
     pushData(teachers = this.props.teachers) {
         let data1 = { ...data };
         data1.rows = [];
         let rows = teachers.map((t, i) => {
+            let subject = this.props.subjects.find(s => s.Id === t.SubjectId);
             return {
                 No: i + 1,
                 Name: t.Name,
+                Subject: subject ? subject.Name : '',
+                HomeroomClass: t.HomeroomClass.map((hc, i) => `${i > 0 ? ', ' : ''}${hc.Name}`),
+                TeachingClassQuantity: `${t.TeachingClassQuantity} classes`,
                 Action: <Button color='primary' onClick={() => {
                     let modalContent = <TeacherDetail teacher={t} />
                     this.setState({
                         openModal: true,
                         modalContent: modalContent
                     })
-                }}>Detail</Button>
+                }}>Chi tiết</Button>
             }
         })
         data1.rows = rows;
@@ -52,7 +62,7 @@ class ListTeacher extends Component {
         let data = this.pushData(this.props.teachers);
         return (
             <Container>
-                <Header className='text-center'>Teacher</Header>
+                <Header className='text-center'>Giáo viên</Header>
                 <div className='col-sm-12'>
                     <AddTeacher />
                 </div>
@@ -62,7 +72,7 @@ class ListTeacher extends Component {
                             className='hide-last-row'
                             striped
                             bordered
-                            data={data} /> : <span>Found 0 teacher!</span>}
+                            data={data} /> : <span>Không có giáo viên nào!</span>}
                     </div>
                 </div>
                 <Modal isOpen={this.state.openModal} className='big-modal'>
@@ -75,7 +85,7 @@ class ListTeacher extends Component {
                                 openModal: false,
                                 modalContent: null
                             })
-                        }}>Close</Button>
+                        }}>Đóng</Button>
                     </ModalFooter>
                 </Modal>
             </Container>);
@@ -89,8 +99,20 @@ const data = {
             field: 'No'
         },
         {
-            label: 'Teacher',
+            label: 'Tên giáo viên',
             field: 'Name'
+        },
+        {
+            label: 'Bộ môn',
+            field: 'Subject'
+        },
+        {
+            label: 'Chủ nhiệm lớp',
+            field: 'HomeroomClass'
+        },
+        {
+            label: 'Đang dạy',
+            field: 'TeachingClassQuantity'
         },
         {
             label: '',
@@ -101,12 +123,16 @@ const data = {
 }
 
 const mapStateToProps = (state) => ({
-    teachers: state.teachers
+    teachers: state.teachers,
+    subjects: state.subjects
 })
 
 const mapDispatchToProps = dispatch => ({
     setTeachers: (list) => {
         dispatch(TeacherAction.setTeachers(list));
+    },
+    setSubjects: (list) => {
+        dispatch(SubjectAction.setSubjects(list));
     }
 })
 

@@ -43,7 +43,7 @@ class ListExam extends Component {
         if (this.isLoading()) {
             return <PrimaryLoadingPage />
         }
-        let data = this.pushData(this.props.subjects);
+        let data = this.pushData(this.props.exams);
         return (<Container>
             <Header className='text-center'>Examinations</Header>
             <div className='col-sm-12'>

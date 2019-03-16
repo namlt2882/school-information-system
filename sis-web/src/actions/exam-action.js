@@ -6,7 +6,7 @@ export const ExamAction = {
         list
     }),
     addExam: (exam) => ({
-        type: Types.ADD_SUBJECT,
+        type: Types.ADD_EXAM,
         exam
     })
 }

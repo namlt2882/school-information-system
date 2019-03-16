@@ -12,17 +12,20 @@ class AddTeacher extends React.Component {
             isOpen: false,
             username: null,
             name: null,
+            subjectId: null,
             password: null,
             loading: false
         }
         this.openModal = this.openModal.bind(this);
         this.addTeacher = this.addTeacher.bind(this);
+        this.changeSubject = this.changeSubject.bind(this);
     }
     openModal() {
         this.setState({
             isOpen: true,
             username: null,
             name: null,
+            subjectId: null,
             password: null
         });
     }
@@ -31,7 +34,8 @@ class AddTeacher extends React.Component {
         let data = {
             Username: this.state.username,
             Password: this.state.password,
-            Name: this.state.name
+            Name: this.state.name,
+            SubjectId: this.state.subjectId
         }
         TeacherService.addTeacher(data).then(res => {
             let rs = res.data;
@@ -42,12 +46,19 @@ class AddTeacher extends React.Component {
             this.setState({ loading: false });
         })
     }
+    changeSubject(e) {
+        let value = e.target.value;
+        if (value == '-1') {
+            value = null;
+        }
+        this.setState({ subjectId: value });
+    }
     render() {
         return (<div>
-            <Button color='primary' onClick={this.openModal}>Add</Button>
+            <Button color='primary' onClick={this.openModal}>Thêm giáo viên</Button>
             <Modal isOpen={this.state.isOpen}>
                 <ModalHeader className='text-center'>
-                    Add new teacher
+                    Thêm giáo viên
                 </ModalHeader>
                 <ModalBody>
                     <Form onSubmit={this.addTeacher} loading={this.state.loading}>
@@ -60,7 +71,7 @@ class AddTeacher extends React.Component {
                                 }} />
                         </Form.Field>
                         <Form.Field>
-                            <label>Name</label>
+                            <label>Họ và tên</label>
                             <input type='text' placeholder='Name' required
                                 value={this.state.name}
                                 onChange={(e) => {
@@ -68,12 +79,19 @@ class AddTeacher extends React.Component {
                                 }} />
                         </Form.Field>
                         <Form.Field>
-                            <label>Password</label>
+                            <label>Mật khẩu</label>
                             <input type='password' placeholder='Password' required
                                 value={this.state.password}
                                 onChange={(e) => {
                                     this.setState({ password: e.target.value });
                                 }} />
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Bộ môn giảng dạy</label>
+                            <select value={this.state.subjectId} onChange={this.changeSubject}>
+                                <option value='-1'>--</option>
+                                {this.props.subjects.map(s => <option value={s.Id}>{s.Name}</option>)}
+                            </select>
                         </Form.Field>
                         <button ref='btn' style={{ display: 'none' }}></button>
                     </Form>
@@ -84,7 +102,7 @@ class AddTeacher extends React.Component {
                     }}>OK</Button>
                     <Button color='secondary' onClick={() => {
                         this.setState({ isOpen: false });
-                    }}>Cancel</Button>
+                    }}>Hủy</Button>
                 </ModalFooter>
             </Modal>
         </div>);
@@ -92,7 +110,8 @@ class AddTeacher extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    teachers: state.teachers
+    teachers: state.teachers,
+    subjects: state.subjects
 })
 
 const mapDispatchToProps = dispatch => ({

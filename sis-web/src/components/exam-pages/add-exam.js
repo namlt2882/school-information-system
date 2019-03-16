@@ -27,7 +27,8 @@ class AddExam extends React.Component {
     addExam() {
         this.setState({ loading: true });
         let data = {
-            Name: this.state.name
+            Name: this.state.name,
+            PercentRate: this.state.percent
         }
         ExamService.addExam(data).then(res => {
             let rs = res.data;
