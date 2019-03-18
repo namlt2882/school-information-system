@@ -48,7 +48,12 @@ namespace SIS_API.Controllers
                     .Select(cm => BaseVM<object>.ToModel<StudentVM>(cm.Student))
                     .ToList();
                 rs.Subjects = origin.ClassSubjects
-                    .Select(cs => BaseVM<object>.ToModel<SubjectVM>(cs.Subject))
+                    .Select(cs =>
+                    {
+                        var vm = BaseVM<object>.ToModel<SubjectVM>(cs.Subject);
+                        vm.Teacher = cs.User != null ? BaseVM<object>.ToModel<UserVM>(cs.User) : null;
+                        return vm;
+                    })
                     .ToList();
             }
             return rs;

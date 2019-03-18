@@ -20,7 +20,7 @@ namespace SIS_API.ViewModel
     public class ClassFM : ClassVM
     {
         [JsonProperty("HomeroomTeacher")]
-        public virtual User User { get; set; }
+        public virtual TeacherVM User { get; set; }
         public virtual ICollection<StudentVM> Students { get; set; }
         public virtual ICollection<SubjectVM> Subjects { get; set; }
     }

@@ -10,46 +10,42 @@ namespace SIS_API.Repository
 {
     public class BaseRepository<T> where T : class
     {
-        public static SchoolInformationSystemEntities DbContext = new SchoolInformationSystemEntities();
+        public SchoolInformationSystemEntities DbContext = new SchoolInformationSystemEntities();
         DbSet entities;
         public BaseRepository()
         {
-            lock (DbContext)
+            Type generic = typeof(T);
+            if (generic == typeof(User))
             {
-                //UpdateContext();
-                Type generic = typeof(T);
-                if (generic == typeof(User))
-                {
-                    entities = DbContext.Users;
-                }
-                else if (generic == typeof(Student))
-                {
-                    entities = DbContext.Students;
-                }
-                else if (generic == typeof(Subject))
-                {
-                    entities = DbContext.Subjects;
-                }
-                else if (generic == typeof(Class))
-                {
-                    entities = DbContext.Classes;
-                }
-                else if (generic == typeof(ClassSubject))
-                {
-                    entities = DbContext.ClassSubjects;
-                }
-                else if (generic == typeof(AcademicTranscript))
-                {
-                    entities = DbContext.AcademicTranscripts;
-                }
-                else if (generic == typeof(ClassMember))
-                {
-                    entities = DbContext.ClassMembers;
-                }
-                else if (generic == typeof(Examination))
-                {
-                    entities = DbContext.Examinations;
-                }
+                entities = DbContext.Users;
+            }
+            else if (generic == typeof(Student))
+            {
+                entities = DbContext.Students;
+            }
+            else if (generic == typeof(Subject))
+            {
+                entities = DbContext.Subjects;
+            }
+            else if (generic == typeof(Class))
+            {
+                entities = DbContext.Classes;
+            }
+            else if (generic == typeof(ClassSubject))
+            {
+                entities = DbContext.ClassSubjects;
+            }
+            else if (generic == typeof(AcademicTranscript))
+            {
+                entities = DbContext.AcademicTranscripts;
+            }
+            else if (generic == typeof(ClassMember))
+            {
+                entities = DbContext.ClassMembers;
+            }
+            else if (generic == typeof(Examination))
+            {
+                entities = DbContext.Examinations;
             }
         }
 
