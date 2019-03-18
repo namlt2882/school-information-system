@@ -140,7 +140,7 @@ namespace SIS_API.Service
                     origin.ClassSubjects.Add(classSubject);
                     rs.Add(classSubject);
                 }
-                else if (found.Status == (int)ClassSubjectEnums.STATUS_DISABLE)
+                else
                 {
                     found.Status = (int)ClassSubjectEnums.STATUS_ACTIVE;
                     found.Teacher = i.TeacherId;

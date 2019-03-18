@@ -68,9 +68,10 @@ namespace SIS_API.Controllers
         }
 
         [HttpPut]
-        [Route("api/Class")]
-        public void Put(ClassVM subject)
+        [Route("api/Class/{id}")]
+        public void Put(int id, [FromBody]ClassVM subject)
         {
+            subject.Id = id;
             service.Update(subject.ToEntity());
         }
 
