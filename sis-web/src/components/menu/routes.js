@@ -7,6 +7,7 @@ import ListStudent from '../student-pages/list-student';
 import ListTranscript from '../transcript-pages/list-transcript';
 import ListClass from '../class-pages/list-class';
 import ListExam from '../exam-pages/list-exam';
+import ClassDetail from '../class-pages/class-detail';
 
 const routes = [
     {
@@ -32,12 +33,17 @@ const routes = [
     {
         path: '/transcript',
         exact: false,
-        main: () => <ListTranscript />
+        main: ({ history }) => <ListTranscript history={history} />
     },
     {
         path: '/class',
-        exact: false,
-        main: () => <ListClass />
+        exact: true,
+        main: ({ history }) => <ListClass history={history} />
+    },
+    {
+        path: '/class/:id/view',
+        exact: true,
+        main: ({ match, history }) => <ClassDetail match={match} history={history} />
     },
     {
         path: '/exam',

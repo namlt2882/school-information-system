@@ -15,5 +15,8 @@ export const ClassService = {
                 TeacherId: cs.teacherId
             }))
         })
+    },
+    get: (id) => {
+        return AuthRequest.get(`Class/${id}`);
     }
 }

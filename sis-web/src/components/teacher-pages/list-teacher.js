@@ -42,7 +42,7 @@ class ListTeacher extends Component {
                 Name: t.Name,
                 Subject: subject ? subject.Name : '',
                 HomeroomClass: t.HomeroomClass.map((hc, i) => `${i > 0 ? ', ' : ''}${hc.Name}`),
-                TeachingClassQuantity: t.TeachingClassQuantity > 0 ? `${t.TeachingClassQuantity} lớp` : '(không)',
+                TeachingClassQuantity: `${t.TeachingClassQuantity} lớp`,
                 Action: <Button color='primary' onClick={() => {
                     let modalContent = <TeacherDetail teacher={t} />
                     this.setState({
@@ -67,7 +67,7 @@ class ListTeacher extends Component {
                     <AddTeacher />
                 </div>
                 <div className='col-sm-12 row justify-content-center align-self-center'>
-                    <div className='col-sm-8'>
+                    <div className='col-sm-10'>
                         {data.rows.length > 0 ? <MDBDataTable
                             className='hide-last-row'
                             striped

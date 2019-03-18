@@ -3,7 +3,7 @@ import Component from '../common/component';
 import { connect } from 'react-redux'
 import { available1, PrimaryLoadingPage } from '../common/loading-page';
 import { MDBDataTable } from 'mdbreact'
-import { Container, Header, Button } from 'semantic-ui-react';
+import { Container, Header, Button, Label } from 'semantic-ui-react';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import AddClass from './add-class';
 import { ClassService } from '../../services/class-service';
@@ -12,6 +12,8 @@ import { TeacherAction } from '../../actions/teacher-action';
 import { SubjectAction } from '../../actions/subject-action';
 import { TeacherService } from '../../services/teacher-service'
 import { SubjectService } from '../../services/subject-service'
+import { Link } from 'react-router-dom'
+import { getStatusColor, describeClassStatus } from './class-detail';
 class ListClass extends Component {
     constructor(props) {
         super(props);
@@ -32,10 +34,15 @@ class ListClass extends Component {
             return {
                 No: i + 1,
                 Name: c.Name,
-                Manager: homeRoomTeacher ? homeRoomTeacher.Name : '(Chưa có)',
+                Manager: homeRoomTeacher ? homeRoomTeacher.Name : null,
                 SubjectQuantity: c.SubjectQuantity,
                 StudentQuantity: c.StudentQuantity,
-                Action: null
+                Status: <Label color={getStatusColor(c.Status)}>
+                    {describeClassStatus(c.Status)}
+                </Label>,
+                Action: <Button color='primary' onClick={() => {
+                    this.props.history.push(`/class/${c.Id}/view`);
+                }}>Chi tiết</Button>
             }
         })
         data1.rows = rows;
@@ -114,6 +121,10 @@ const data = {
         {
             label: 'Số lượng học sinh',
             field: 'StudentQuantity'
+        },
+        {
+            label: 'Tình trạng',
+            field: 'Status'
         },
         {
             label: '',

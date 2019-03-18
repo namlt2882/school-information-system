@@ -8,5 +8,9 @@ export const ClassAction = {
     addClass: (clazz) => ({
         type: Types.ADD_CLASS,
         clazz
+    }),
+    setClass: (clazz) => ({
+        type: Types.SET_CLASS,
+        clazz
     })
 }
