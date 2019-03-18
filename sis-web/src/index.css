@@ -14,3 +14,8 @@ code {
 table {
     font-size: 1rem;
 }
+
+.k-animation-container {
+    position: relative;
+    z-index: 10003 !important;
+}

@@ -36,7 +36,7 @@ class ClassDetail extends Component {
                 return {
                     No: i + 1,
                     Name: `${s.LastName} ${s.FirstName}`,
-                    Birthday: s.Birthday ? s.Birthday.toLocalDate() : '',
+                    Birthday: s.Birthday ? new Date(s.Birthday).toLocaleDateString() : '',
                     Action:
                         [<Button color='primary'>Bảng điểm</Button>,
                         <Button color='secondary'>Xóa</Button>]

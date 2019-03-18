@@ -3,10 +3,12 @@ import { teachers } from './teacher-reducer'
 import { subjects } from './subject-reducer'
 import { exams } from './exam-reducer'
 import { classes, clazz } from './class-reducer'
+import { students } from './student-reducer'
 
 export const MainReducer = combineReducers({
     teachers,
     subjects,
     exams,
-    classes, clazz
+    classes, clazz,
+    students
 });
