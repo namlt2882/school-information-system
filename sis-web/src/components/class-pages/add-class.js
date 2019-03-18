@@ -207,7 +207,7 @@ class AddClass extends React.Component {
                     }}>OK</Button>
                     <Button color='secondary' onClick={() => {
                         this.setState({ isOpen: false });
-                    }}>Cancel</Button>
+                    }}>Đóng</Button>
                 </ModalFooter>
             </Modal>
         </div>);

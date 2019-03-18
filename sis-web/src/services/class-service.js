@@ -16,7 +16,19 @@ export const ClassService = {
             }))
         })
     },
+    removeSubjects: (classId, classSubjects) => {
+        return AuthRequest.put('Class/RemoveSubject', {
+            ClassId: classId,
+            SubjectIds: classSubjects.map(cs => ({
+                SubjectId: cs.subjectId,
+                TeacherId: cs.teacherId
+            }))
+        })
+    },
     get: (id) => {
         return AuthRequest.get(`Class/${id}`);
+    },
+    updateInfo: (id, data) => {
+        return AuthRequest.put(`Class/${id}`, data);
     }
 }
