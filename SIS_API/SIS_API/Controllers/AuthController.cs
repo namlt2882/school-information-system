@@ -21,7 +21,7 @@ namespace SIS_API.Controllers
     {
         AuthenticationService service = new AuthenticationService();
         UserService userService = new UserService();
-        [Route("auth/Login")]
+        [Route("api/auth/Login")]
         [HttpPost]
         [AllowAnonymous]
         public HttpResponseMessage Login([FromBody]UserSM user)
@@ -46,7 +46,7 @@ namespace SIS_API.Controllers
             };
         }
 
-        [Route("auth/Info")]
+        [Route("api/auth/Info")]
         [HttpGet]
         public UserVM GetInfo()
         {
