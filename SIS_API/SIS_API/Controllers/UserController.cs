@@ -10,45 +10,53 @@ using System.Web.Http;
 
 namespace SIS_API.Controllers
 {
-    [JwtAuthentication]
+    [AllowAnonymous]
     public class UserController : ApiController
     {
         UserService service = new UserService();
+        ClassService classService = new ClassService();
         // GET: api/User
         [HttpGet]
         [Route("api/User")]
-        public IEnumerable<UserVM> GetAllUsers()
+        public IEnumerable<TeacherVM> GetAllUsers()
         {
             IEnumerable<User> list = service.GetAll();
-            return list.Select(i => BaseVM<object>.ToModel<UserVM>(i));
+            return list.Select(i =>
+            {
+                var vm = BaseVM<object>.ToModel<TeacherVM>(i);
+                vm.HomeroomClass = classService.GetHomeroomClass(i.Username)
+                .Select(c => BaseVM<object>.ToModel<ClassVM>(c));
+                vm.TeachingClassQuantity = classService.GetTeacherCurrentClassQuantity(i.Username);
+                return vm;
+            });
         }
 
         // GET: api/User/5
         [HttpGet]
         [Route("api/User/{username}")]
-        public UserVM Get(string username)
+        public TeacherVM Get(string username)
         {
             var user = service.GetByUsername(username);
-            return user == null ? null : BaseVM<object>.ToModel<UserVM>(user);
+            return user == null ? null : BaseVM<object>.ToModel<TeacherVM>(user);
         }
 
         // POST: api/User
         [HttpPost]
         [Route("api/User")]
-        public UserVM Post([FromBody]User value)
+        public TeacherVM Post([FromBody]UserCM value)
         {
             UserService service = new UserService();
-            User newUser = service.InsertUser(value);
-            return BaseVM<object>.ToModel<UserVM>(newUser);
+            User newUser = service.InsertUser(value.ToEntity());
+            return BaseVM<object>.ToModel<TeacherVM>(newUser);
         }
 
         // PUT: api/User/5
         [HttpPut]
         [Route("api/User/{username}")]
-        public void Put(string username, [FromBody]User value)
+        public void Put(string username, [FromBody]UserCM value)
         {
             value.Username = username;
-            service.Update(value);
+            service.Update(value.ToEntity());
         }
 
         // DELETE: api/User/5
@@ -59,4 +67,5 @@ namespace SIS_API.Controllers
             service.Delete(username);
         }
     }
+
 }

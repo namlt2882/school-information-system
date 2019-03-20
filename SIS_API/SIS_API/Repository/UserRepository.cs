@@ -8,6 +8,14 @@ namespace SIS_API.Repository
 {
     public class UserRepository : BaseRepository<User>
     {
+        public IEnumerable<User> GetAll()
+        {
+            var users = from u in DbContext.Users
+                        where u.Role != (int)UserEnums.ROLE_ADMIN && u.Status != (int)UserEnums.STATUS_DISABLE
+                        select u;
+            return users;
+        }
+
         public User Get(string username)
         {
             var user = DbContext.Users.Where(x => x.Username == username && x.Status == (int)UserEnums.STATUS_ACTIVE).FirstOrDefault();

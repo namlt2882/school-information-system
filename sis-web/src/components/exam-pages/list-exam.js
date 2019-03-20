@@ -1,53 +1,53 @@
 import React from 'react';
 import Component from '../common/component';
 import { connect } from 'react-redux'
-import { StudentAction } from '../../actions/student-action';
 import { available1, PrimaryLoadingPage } from '../common/loading-page';
-import { StudentService } from '../../services/student-service';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { Container, Header, Button } from 'semantic-ui-react';
 import { MDBDataTable } from 'mdbreact'
-import AddStudent from './add-student';
-
-class ListStudent extends Component {
+import { Container, Header, Button } from 'semantic-ui-react';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { ExamAction } from '../../actions/exam-action';
+import { ExamService } from '../../services/exam-service';
+import AddExam from './add-exam';
+class ListExam extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
-        this.pushData = this.pushData.bind(this);
+        this.state = {
+            maxLoading: 1,
+            openModal: false,
+            modalContent: null
+        }
     }
-    componentDidMount() {
-        available1();
-        StudentService.getAll().then(res => {
-            let list = res.data;
-            this.props.setStudents(list);
-        })
-    }
-
-    pushData(students = this.props.students) {
+    pushData(exams = this.props.exams) {
         let data1 = { ...data };
         data1.rows = [];
-        let rows = students.map((s, i) => {
+        let rows = exams.map((e, i) => {
             return {
                 No: i + 1,
-                LastName: s.LastName,
-                FirstName: s.FirstName,
-                Birthday: s.Birthday ? new Date(s.Birthday).toLocaleDateString() : null,
+                Name: e.Name,
+                Percent: `${e.PercentRate} %`,
                 Action: null
             }
         })
         data1.rows = rows;
         return data1;
     }
+    componentDidMount() {
+        available1();
+        ExamService.getAll().then(res => {
+            this.props.setExams(res.data);
+            this.incrementLoading();
+        })
+    }
 
     render() {
         if (this.isLoading()) {
             return <PrimaryLoadingPage />
         }
-        let data = this.pushData(this.props.students);
+        let data = this.pushData(this.props.exams);
         return (<Container>
-            <Header className='text-center'>Danh sách Học sinh</Header>
+            <Header className='text-center'>Danh sách Kì thi</Header>
             <div className='col-sm-12'>
-                <AddStudent/>
+                <AddExam />
             </div>
             <div className='col-sm-12 row justify-content-center align-self-center'>
                 <div className='col-sm-8'>
@@ -55,7 +55,7 @@ class ListStudent extends Component {
                         className='hide-last-row'
                         striped
                         bordered
-                        data={data} /> : <span>Không có học sinh nào!</span>}
+                        data={data} /> : <span>Không có kì thi nào!</span>}
                 </div>
             </div>
             <Modal isOpen={this.state.openModal} className='big-modal'>
@@ -82,16 +82,12 @@ const data = {
             field: 'No'
         },
         {
-            label: 'Họ',
-            field: 'LastName'
+            label: 'Tên kì thi',
+            field: 'Name'
         },
         {
-            label: 'Tên',
-            field: 'FirstName'
-        },
-        {
-            label: 'Ngày sinh',
-            field: 'Birthday'
+            label: 'Trọng số trên tổng điểm',
+            field: 'Percent'
         },
         {
             label: '',
@@ -102,12 +98,13 @@ const data = {
 }
 
 const mapStateToProps = (state) => ({
-    students: state.students
+    exams: state.exams
 })
 
 const mapDispatchToProps = dispatch => ({
-    setStudents: (list) => {
-        dispatch(StudentAction.setStudents(list));
+    setExams: (list) => {
+        dispatch(ExamAction.setExams(list));
     }
 })
-export default connect(mapStateToProps, mapDispatchToProps)(ListStudent);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListExam);

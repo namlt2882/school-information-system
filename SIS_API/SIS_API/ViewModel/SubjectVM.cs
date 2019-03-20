@@ -9,5 +9,6 @@ namespace SIS_API.ViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public UserVM Teacher { get; set; }
     }
 }

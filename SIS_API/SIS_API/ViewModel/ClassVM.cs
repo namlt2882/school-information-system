@@ -13,12 +13,14 @@ namespace SIS_API.ViewModel
         public string Manager { get; set; }
         public System.DateTime InsertDate { get; set; }
         public int Status { get; set; }
+        public int SubjectQuantity { get; set; }
+        public int StudentQuantity { get; set; }
     }
 
     public class ClassFM : ClassVM
     {
         [JsonProperty("HomeroomTeacher")]
-        public virtual User User { get; set; }
+        public virtual TeacherVM User { get; set; }
         public virtual ICollection<StudentVM> Students { get; set; }
         public virtual ICollection<SubjectVM> Subjects { get; set; }
     }

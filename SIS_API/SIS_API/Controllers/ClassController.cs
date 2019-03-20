@@ -1,4 +1,5 @@
 ﻿using SIS_API.Service;
+using SIS_API.Utility;
 using SIS_API.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,15 @@ namespace SIS_API.Controllers
         public IEnumerable<ClassVM> GetAll()
         {
             var list = service.GetAll();
-            return list.Select(i => BaseVM<object>.ToModel<ClassVM>(i));
+            return list.Select(i =>
+            {
+                var vm = BaseVM<object>.ToModel<ClassVM>(i);
+                vm.SubjectQuantity = i.ClassSubjects
+                .Where(cs => cs.Status != (int)ClassSubjectEnums.STATUS_DISABLE).Count();
+                vm.StudentQuantity = i.ClassMembers
+                .Where(cm => cm.Status != (int)ClassMemberEnums.STATUS_DISABLE).Count();
+                return vm;
+            });
         }
 
         [HttpGet]
@@ -39,7 +48,12 @@ namespace SIS_API.Controllers
                     .Select(cm => BaseVM<object>.ToModel<StudentVM>(cm.Student))
                     .ToList();
                 rs.Subjects = origin.ClassSubjects
-                    .Select(cs => BaseVM<object>.ToModel<SubjectVM>(cs.Subject))
+                    .Select(cs =>
+                    {
+                        var vm = BaseVM<object>.ToModel<SubjectVM>(cs.Subject);
+                        vm.Teacher = cs.User != null ? BaseVM<object>.ToModel<UserVM>(cs.User) : null;
+                        return vm;
+                    })
                     .ToList();
             }
             return rs;
@@ -54,9 +68,10 @@ namespace SIS_API.Controllers
         }
 
         [HttpPut]
-        [Route("api/Class")]
-        public void Put(ClassVM subject)
+        [Route("api/Class/{id}")]
+        public void Put(int id, [FromBody]ClassVM subject)
         {
+            subject.Id = id;
             service.Update(subject.ToEntity());
         }
 
@@ -131,6 +146,11 @@ namespace SIS_API.Controllers
     public class AddSubjectModel
     {
         public int ClassId { get; set; }
-        public List<int> SubjectIds { get; set; }
+        public List<ClassSubjectModel> SubjectIds { get; set; }
+    }
+    public class ClassSubjectModel
+    {
+        public int SubjectId { get; set; }
+        public string TeacherId { get; set; }
     }
 }

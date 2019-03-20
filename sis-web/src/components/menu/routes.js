@@ -1,36 +1,54 @@
 import React from 'react';
 import NotFoundPage from './../error-pages/not-found-page'
 import DashBoard from '../common/dashboard';
-import ListUser from '../user-pages/list-user';
+import ListTeacher from '../teacher-pages/list-teacher';
 import ListSubject from '../subject-pages/list-subject';
 import ListStudent from '../student-pages/list-student';
 import ListTranscript from '../transcript-pages/list-transcript';
+import ListClass from '../class-pages/list-class';
+import ListExam from '../exam-pages/list-exam';
+import ClassDetail from '../class-pages/class-detail';
 
 const routes = [
     {
         path: '/',
         exact: true,
-        main: () => <DashBoard />
+        main: ({ history }) => <DashBoard history={history} />
     },
     {
-        path: '/user',
+        path: '/teacher',
         exact: false,
-        main: () => <ListUser />
+        main: ({ history }) => <ListTeacher history={history} />
     },
     {
         path: '/subject',
         exact: false,
-        main: () => <ListSubject />
+        main: ({ history }) => <ListSubject history={history} />
     },
     {
         path: '/student',
         exact: false,
-        main: () => <ListStudent/>
+        main: ({ history }) => <ListStudent history={history} />
     },
     {
         path: '/transcript',
         exact: false,
-        main: () => <ListTranscript />
+        main: ({ history }) => <ListTranscript history={history} />
+    },
+    {
+        path: '/class',
+        exact: true,
+        main: ({ history }) => <ListClass history={history} />
+    },
+    {
+        path: '/class/:id/view',
+        exact: true,
+        main: ({ match, history }) => <ClassDetail match={match} history={history} />
+    },
+    {
+        path: '/exam',
+        exact: false,
+        main: () => <ListExam />
     }
 ];
 

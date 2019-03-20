@@ -119,6 +119,16 @@
   padding-right: 0px;
 }
 
+.normal-modal {
+  width: 60% !important;
+  max-width: none !important;
+}
+
+.normal-modal .modal-body {
+  max-height: 30rem !important;
+  overflow-y: scroll;
+}
+
 .big-modal {
   width: 80% !important;
   max-width: none !important;
@@ -145,4 +155,9 @@ table.table a {
 
 .hide-last-row thead:last-child {
   display: none;
+}
+
+.my-header{
+  margin-top: 40px;
+  margin-bottom: 20px;
 }

@@ -11,7 +11,7 @@ namespace SIS_API.Repository
         public IEnumerable<Student> GetAll()
         {
             var students = DbContext.Students
-                .Where(s => s.Status == (int)StudentEnums.STATUS_ACTIVE);
+                .Where(s => s.Status != (int)StudentEnums.STATUS_DISABLE);
             return students;
         }
 

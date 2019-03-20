@@ -17,5 +17,16 @@ namespace SIS_API.ViewModel
     {
         public string Username { get; set; }
         public string Name { get; set; }
+        public Nullable<int> SubjectId { get; set; }
+        public IEnumerable<ClassVM> HomeroomClass { get; set; } = new List<ClassVM>();
+        public int TeachingClassQuantity { get; set; }
+    }
+
+    public class UserCM : BaseVM<User>
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Name { get; set; }
+        public Nullable<int> SubjectId { get; set; }
     }
 }
