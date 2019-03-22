@@ -30,5 +30,8 @@ export const ClassService = {
     },
     updateInfo: (id, data) => {
         return AuthRequest.put(`Class/${id}`, data);
+    },
+    getTeachingClass: (username) => {
+        return AuthRequest.get(`Class/TeachingClass/${username}`);
     }
 }

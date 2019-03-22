@@ -8,6 +8,8 @@ import StudentTranscript from '../transcript-pages/student-transcript';
 import ListClass from '../class-pages/list-class';
 import ListExam from '../exam-pages/list-exam';
 import ClassDetail from '../class-pages/class-detail';
+import { AuthService } from '../../services/auth-service';
+import ListClassTeacherView from '../class-pages/list-class-teacher-view';
 
 const routes = [
     {
@@ -39,7 +41,12 @@ const routes = [
     {
         path: '/class',
         exact: true,
-        main: ({ history }) => <ListClass history={history} />
+        main: ({ history }) => {
+            if (AuthService.isTeacher()) {
+                return <ListClassTeacherView history={history}/>
+            }
+            return <ListClass history={history} />
+        }
     },
     {
         path: '/class/:id/view',

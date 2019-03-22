@@ -10,18 +10,23 @@ import { ClassService } from '../../services/class-service';
 import { ClassAction } from '../../actions/class-action';
 import { TeacherAction } from '../../actions/teacher-action';
 import { SubjectAction } from '../../actions/subject-action';
+import { StudentAction } from '../../actions/student-action';
 import { TeacherService } from '../../services/teacher-service'
 import { SubjectService } from '../../services/subject-service'
+import { StudentService } from '../../services/student-service'
 import { Link } from 'react-router-dom'
 import { getStatusColor, describeClassStatus } from './class-detail';
-class ListClass extends Component {
+import { AuthService } from '../../services/auth-service';
+import ClassSubjectTranscript from '../transcript-pages/class-subject-transcript';
+class ListClassTeacherView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            maxLoading: 3,
+            maxLoading: 4,
             openModal: false,
             modalContent: null
         }
+        this.closeModal = this.closeModal.bind(this);
     }
     pushData(classes = this.props.classes) {
         let data1 = { ...data };
@@ -31,18 +36,23 @@ class ListClass extends Component {
             if (homeRoomTeacher !== null) {
                 homeRoomTeacher = this.props.teachers.find(t => t.Username === homeRoomTeacher);
             }
+            let subject = this.props.subjects.find(s => s.Id === c.SubjectId);
             return {
                 No: i + 1,
                 Name: c.Name,
                 Manager: homeRoomTeacher ? homeRoomTeacher.Name : null,
-                SubjectQuantity: c.SubjectQuantity,
+                Subject: subject.Name,
                 StudentQuantity: c.StudentQuantity,
                 Status: <Label color={getStatusColor(c.Status)}>
                     {describeClassStatus(c.Status)}
                 </Label>,
                 Action: <Button color='primary' onClick={() => {
-                    this.props.history.push(`/class/${c.Id}/view`);
-                }}>Chi tiết</Button>
+                    let modalContent = <ClassSubjectTranscript closeModal={this.closeModal} classSubjectId={c.ClassSubjectId} />
+                    this.setState({
+                        openModal: true,
+                        modalContent: modalContent
+                    })
+                }}>Cập nhật bảng điểm</Button>
             }
         })
         data1.rows = rows;
@@ -50,7 +60,8 @@ class ListClass extends Component {
     }
     componentDidMount() {
         available1();
-        ClassService.getAll().then(res => {
+        let username = AuthService.getUsername();
+        ClassService.getTeachingClass(username).then(res => {
             this.props.setClasses(res.data);
             this.incrementLoading();
         })
@@ -62,6 +73,17 @@ class ListClass extends Component {
             this.props.setSubjects(res.data);
             this.incrementLoading();
         })
+        StudentService.getAll().then(res => {
+            this.props.setStudents(res.data);
+            this.incrementLoading();
+        })
+    }
+
+    closeModal() {
+        this.setState({
+            openModal: false,
+            modalContent: null
+        })
     }
 
     render() {
@@ -70,7 +92,7 @@ class ListClass extends Component {
         }
         let data = this.pushData(this.props.classes);
         return (<Container>
-            <Header className='text-center'>Danh sách Lớp học</Header>
+            <Header className='text-center'>Lớp học đang dạy</Header>
             <div className='col-sm-12'>
                 <AddClass />
             </div>
@@ -88,12 +110,7 @@ class ListClass extends Component {
                     {this.state.modalContent}
                 </ModalBody>
                 <ModalFooter>
-                    <Button color='secondary' onClick={() => {
-                        this.setState({
-                            openModal: false,
-                            modalContent: null
-                        })
-                    }}>Close</Button>
+                    <Button color='secondary' onClick={this.closeModal}>Close</Button>
                 </ModalFooter>
             </Modal>
         </Container>);
@@ -115,8 +132,8 @@ const data = {
             field: 'Manager'
         },
         {
-            label: 'Số lượng môn học',
-            field: 'SubjectQuantity'
+            label: 'Môn học',
+            field: 'Subject'
         },
         {
             label: 'Số lượng học sinh',
@@ -136,7 +153,8 @@ const data = {
 
 const mapStateToProps = (state) => ({
     classes: state.classes,
-    teachers: state.teachers
+    teachers: state.teachers,
+    subjects: state.subjects
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -148,7 +166,10 @@ const mapDispatchToProps = dispatch => ({
     },
     setSubjects: (list) => {
         dispatch(SubjectAction.setSubjects(list));
+    },
+    setStudents: (list) => {
+        dispatch(StudentAction.setStudents(list));
     }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListClass);
+export default connect(mapStateToProps, mapDispatchToProps)(ListClassTeacherView);
