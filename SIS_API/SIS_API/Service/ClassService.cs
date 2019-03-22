@@ -25,8 +25,10 @@ namespace SIS_API.Service
             {
                 clazz = null;
             }
+            //get class member which is active
             clazz.ClassMembers = new Collection<ClassMember>
                 (clazz.ClassMembers.Where(cm => cm.Status == (int)ClassMemberEnums.STATUS_ACTIVE).ToList());
+            //get class subject which is active
             clazz.ClassSubjects = new Collection<ClassSubject>
                 (clazz.ClassSubjects.Where(cs => cs.Status == (int)ClassSubjectEnums.STATUS_ACTIVE).ToList());
             return clazz;
@@ -142,9 +144,12 @@ namespace SIS_API.Service
                 }
                 else
                 {
+                    if(found.Status == (int)ClassSubjectEnums.STATUS_DISABLE)
+                    {
+                        rs.Add(found);
+                    }
                     found.Status = (int)ClassSubjectEnums.STATUS_ACTIVE;
                     found.Teacher = i.TeacherId;
-                    rs.Add(found);
                 }
             });
             repository.Update(origin);
