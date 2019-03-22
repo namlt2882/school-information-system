@@ -23,6 +23,7 @@ namespace SIS_API.App_Start
 
                 config.CreateMap<Class, ClassVM>().ReverseMap();
                 config.CreateMap<Class, ClassFM>().ReverseMap();
+                config.CreateMap<Class, TeachingClassVM>().ReverseMap();
 
                 config.CreateMap<AcademicTranscript, TranscriptVM>().ReverseMap();
             });

@@ -10,18 +10,22 @@ import { TeacherAction } from '../../actions/teacher-action';
 import { SubjectAction } from '../../actions/subject-action';
 import { connect } from 'react-redux'
 import { MDBDataTable } from 'mdbreact'
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import UpdateClassInfo from './update/update-class-info';
 import UpdateClassSubject from './update/update-class-subject';
+import StudentTranscript from '../transcript-pages/student-transcript';
 library.add(faPen);
 
 class ClassDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            maxLoading: 3
+            maxLoading: 3,
+            isOpenTranscript: false,
+            transcriptContent: null
         }
     }
 
@@ -57,7 +61,16 @@ class ClassDetail extends Component {
                     Name: `${s.LastName} ${s.FirstName}`,
                     Birthday: s.Birthday ? new Date(s.Birthday).toLocaleDateString() : '',
                     Action:
-                        [<Button color='primary'>Bảng điểm</Button>,
+                        [<Button color='primary'
+                            onClick={() => {
+                                let transcriptContent = <StudentTranscript
+                                    key={`${this.props.clazz.Id}-${s.Id}`}
+                                    classId={this.props.clazz.Id} studentId={s.Id} />
+                                this.setState({
+                                    isOpenTranscript: true,
+                                    transcriptContent: transcriptContent
+                                })
+                            }}>Bảng điểm</Button>,
                         <Button color='secondary'>Xóa</Button>]
                 }
             })
@@ -71,10 +84,11 @@ class ClassDetail extends Component {
         }
         let clazz = this.props.clazz;
         let data1 = this.pushData(clazz.Students);
+        let average = 0;
         return (<Container>
             <div className='col-sm-12 row'>
                 {/* Class info */}
-                <div className='col-sm-4 row'>
+                <div className='col-sm-5 row'>
                     <div className='col-sm-12 row'>
                         <div className='col-sm-12 text-center my-header'>
                             <h3><Icon name='info' />Thông tin lớp học
@@ -125,20 +139,30 @@ class ClassDetail extends Component {
                                 <tr>
                                     <th>Bộ môn</th>
                                     <th>Giáo viên</th>
+                                    <th>Điểm trung bình</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {clazz.Subjects.map(s => <tr>
-                                    <td>{s.Name}</td>
-                                    <td>{s.Teacher ? s.Teacher.Name : null}</td>
-                                </tr>)}
+                                {clazz.Subjects.map(s => {
+                                    average += s.AverageScore;
+                                    return <tr>
+                                        <td>{s.Name}</td>
+                                        <td>{s.Teacher ? s.Teacher.Name : null}</td>
+                                        <td>{s.AverageScore}</td>
+                                    </tr>
+                                })}
+                                <tr>
+                                    <td></td>
+                                    <td>Trung bình:</td>
+                                    <td>{(1.0 * average / clazz.Subjects.length).toFixed(2)}</td>
+                                </tr>
                             </tbody>
                         </table> : <span>Không có môn học nào trong lớp này!</span>}
 
                     </div>
                 </div>
                 {/* Student in class */}
-                <div className='col-sm-8 row'>
+                <div className='col-sm-7 row'>
                     <div className='col-sm-12 row'>
                         <div className='col-sm-12 text-center my-header' style={{ marginBottom: '0px' }}>
                             <h3><Icon name='users' />Học sinh trong lớp</h3>
@@ -153,6 +177,19 @@ class ClassDetail extends Component {
                     </div>
                 </div>
             </div>
+            <Modal isOpen={this.state.isOpenTranscript} className='normal-modal'>
+                <ModalBody>
+                    {this.state.transcriptContent}
+                </ModalBody>
+                <ModalFooter>
+                    <Button color='secondary' onClick={() => {
+                        this.setState({
+                            isOpenTranscript: false,
+                            transcriptContent: null
+                        })
+                    }}>Đóng</Button>
+                </ModalFooter>
+            </Modal>
         </Container>);
     }
 }
@@ -202,6 +239,14 @@ export const describeClassStatus = (status) => {
     return rs;
 }
 
+export const sortSubjectAlphabetically = (subjects) => {
+    subjects.sort((s1, s2) => {
+        let name1 = s1.Name.toUpperCase();
+        let name2 = s2.Name.toUpperCase();
+        return (name1 < name2) ? -1 : (name1 > name2) ? 1 : 0;
+    })
+}
+
 const mapStateToProps = (state) => ({
     clazz: state.clazz,
     teachers: state.teachers,
@@ -209,6 +254,7 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = dispatch => ({
     setClass: (clazz) => {
+        sortSubjectAlphabetically(clazz.Subjects);
         dispatch(ClassAction.setClass(clazz));
     },
     setTeachers: (list) => {

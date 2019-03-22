@@ -31,7 +31,10 @@ class UpdateClassSubject extends Component {
         let clazz = this.props.clazz;
         let addData = this.state.subjects;
         let removeData = clazz.Subjects.filter(cs => !addData.find(ad => ad.subjectId === cs.Id))
-            .map(s => ({ subjectId: s.Id, teacherId: s.Teacher }));
+            .map(s => ({
+                subjectId: s.Id,
+                teacherId: s.Teacher ? s.Teacher.Username : null
+            }));
         ClassService.addSubjects(clazz.Id, addData).then(res => {
             let Subjects = addData.map(ad => {
                 let sub = this.props.subjects.find(s => s.Id === ad.subjectId);

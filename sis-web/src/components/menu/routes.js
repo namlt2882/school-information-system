@@ -4,16 +4,23 @@ import DashBoard from '../common/dashboard';
 import ListTeacher from '../teacher-pages/list-teacher';
 import ListSubject from '../subject-pages/list-subject';
 import ListStudent from '../student-pages/list-student';
-import ListTranscript from '../transcript-pages/list-transcript';
+import StudentTranscript from '../transcript-pages/student-transcript';
 import ListClass from '../class-pages/list-class';
 import ListExam from '../exam-pages/list-exam';
 import ClassDetail from '../class-pages/class-detail';
+import { AuthService } from '../../services/auth-service';
+import ListClassTeacherView from '../class-pages/list-class-teacher-view';
 
 const routes = [
     {
         path: '/',
         exact: true,
-        main: ({ history }) => <DashBoard history={history} />
+        main: ({ history }) => {
+            if (AuthService.isTeacher()) {
+                return <ListClassTeacherView history={history} />
+            }
+            return <ListClass history={history} />
+        }
     },
     {
         path: '/teacher',
@@ -31,14 +38,20 @@ const routes = [
         main: ({ history }) => <ListStudent history={history} />
     },
     {
-        path: '/transcript',
+        path: '/transcript/:classId/:studentId/view',
         exact: false,
-        main: ({ history }) => <ListTranscript history={history} />
+        main: ({ match, history }) => <StudentTranscript
+            key={`${match.params.classId}-${match.params.studentId}`} match={match} history={history} />
     },
     {
         path: '/class',
         exact: true,
-        main: ({ history }) => <ListClass history={history} />
+        main: ({ history }) => {
+            if (AuthService.isTeacher()) {
+                return <ListClassTeacherView history={history} />
+            }
+            return <ListClass history={history} />
+        }
     },
     {
         path: '/class/:id/view',

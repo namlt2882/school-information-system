@@ -37,7 +37,7 @@ export const AuthService = {
             let user = res.data.user;
             let token = res.data.token;
             let role = user.Role;
-            let username = user.Username;
+            let username = user.Username.trim();
             let name = user.Name;
             localStorage.setItem('access_token', token);
             localStorage.setItem('role', role);
@@ -54,5 +54,14 @@ export const AuthService = {
     },
     getUserInfo: () => {
         return AuthRequest.get('auth/Info');
+    },
+    isManager: () => {
+        return localStorage.getItem('role') == 1;
+    },
+    isTeacher: () => {
+        return localStorage.getItem('role') == 2;
+    },
+    getUsername: () => {
+        return localStorage.getItem('username');
     }
 }

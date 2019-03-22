@@ -17,6 +17,12 @@ namespace SIS_API.ViewModel
         public int StudentQuantity { get; set; }
     }
 
+    public class TeachingClassVM : ClassVM
+    {
+        public int SubjectId { get; set; }
+        public int ClassSubjectId { get; set; }
+    }
+
     public class ClassFM : ClassVM
     {
         [JsonProperty("HomeroomTeacher")]

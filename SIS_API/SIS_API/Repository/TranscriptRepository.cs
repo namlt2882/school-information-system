@@ -111,5 +111,15 @@ namespace SIS_API.Repository
                 }
             }
         }
+
+        public IEnumerable<AcademicTranscript> GetTranscriptOfClassSubject(int classSubjectId)
+        {
+            var rs = from tran in DbContext.AcademicTranscripts
+                     where tran.Status == (int)TranscriptEnums.STATUS_ACTIVE
+                     && tran.ClassSubjectId == classSubjectId
+                     select tran;
+            return rs;
+        }
+
     }
 }

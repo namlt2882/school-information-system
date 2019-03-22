@@ -52,6 +52,17 @@ namespace SIS_API.Controllers
                     {
                         var vm = BaseVM<object>.ToModel<SubjectVM>(cs.Subject);
                         vm.Teacher = cs.User != null ? BaseVM<object>.ToModel<UserVM>(cs.User) : null;
+                        //calculate subject average
+                        var subjectAverage = cs.AcademicTranscripts
+                        .Where(tran => tran.Status != (int)TranscriptEnums.STATUS_DISABLE)
+                        .Aggregate(0d, (acc, t) =>
+                        {
+                            double score = t.Score.HasValue ? t.Score.Value : 0d;
+                            acc += (score * t.PercentRate.Value) / 100;
+                            return acc;
+                        });
+                        subjectAverage /= rs.Students.Count;
+                        vm.AverageScore = subjectAverage;
                         return vm;
                     })
                     .ToList();
@@ -135,6 +146,23 @@ namespace SIS_API.Controllers
                 ClassId = model.ClassId,
                 SubjectIds = list.Select(x => x.SubjectId).ToList()
             };
+        }
+
+        [HttpGet]
+        [Route("api/Class/TeachingClass/{teacherName}")]
+        public IEnumerable<TeachingClassVM> GetTeachingClass(string teacherName)
+        {
+            var list = service.GetTeachingClass(teacherName);
+            return list.Select(i =>
+            {
+                var clazz = i.Class;
+                var vm = BaseVM<object>.ToModel<TeachingClassVM>(clazz);
+                vm.StudentQuantity = clazz.ClassMembers
+                .Where(cm => cm.Status != (int)ClassMemberEnums.STATUS_DISABLE).Count();
+                vm.SubjectId = i.SubjectId;
+                vm.ClassSubjectId = i.Id;
+                return vm;
+            });
         }
     }
 
