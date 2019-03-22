@@ -164,12 +164,5 @@ const menus = [
 		exact: false,
 		icon: 'user-graduate',
 		roles: [1]
-	},
-	{
-		name: 'Bảng điểm',
-		to: '/transcript',
-		exact: false,
-		icon: 'scroll',
-		roles: [1, 2]
 	}
 ];
