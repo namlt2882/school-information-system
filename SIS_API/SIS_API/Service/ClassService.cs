@@ -13,7 +13,6 @@ namespace SIS_API.Service
     public class ClassService
     {
         ClassRepository repository = new ClassRepository();
-
         public IEnumerable<Class> GetAll()
         {
             return repository.GetAll();
@@ -188,17 +187,23 @@ namespace SIS_API.Service
 
         public int GetTeacherCurrentClassQuantity(string teacherName)
         {
-            return repository.GetTeacherCurrentClass(teacherName).Count();
+            return repository.GetTeachingClass(teacherName).Count();
         }
 
         public List<ClassSubject> GetTeacherCurrentClass(string teacherName)
         {
-            return repository.GetTeacherCurrentClass(teacherName).ToList();
+            return repository.GetTeachingClass(teacherName).ToList();
         }
 
         public List<Class> GetHomeroomClass(string teacherName)
         {
             return repository.GetHomeroomClass(teacherName).ToList();
         }
+
+        public List<ClassSubject> GetTeachingClass(string teacherName)
+        {
+            return repository.GetTeachingClass(teacherName).ToList();
+        }
+
     }
 }

@@ -66,7 +66,7 @@ namespace SIS_API.Repository
             return css.ToList();
         }
 
-        public IQueryable<ClassSubject> GetTeacherCurrentClass(string teacherName)
+        public IQueryable<ClassSubject> GetTeachingClass(string teacherName)
         {
             var css = from cs in DbContext.ClassSubjects
                       where cs.Teacher == teacherName && cs.Status == (int)ClassSubjectEnums.STATUS_ACTIVE

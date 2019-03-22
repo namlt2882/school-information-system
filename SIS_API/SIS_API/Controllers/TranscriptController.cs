@@ -27,6 +27,15 @@ namespace SIS_API.Controllers
         {
             service.UpdateTranscripts(transcripts.Select(tv => tv.ToEntity()).ToList());
         }
+
+        [HttpGet]
+        [Route("api/Transcript/ClassSubject/{classSubjectId}")]
+        public IEnumerable<TranscriptVM> GetTranscriptOfClassSubject(int classSubjectId)
+        {
+            return service.GetTranscriptOfClassSubject(classSubjectId)
+                .Select(tran => BaseVM<object>.ToModel<TranscriptVM>(tran));
+        }
+
     }
-    
+
 }

@@ -147,6 +147,23 @@ namespace SIS_API.Controllers
                 SubjectIds = list.Select(x => x.SubjectId).ToList()
             };
         }
+
+        [HttpGet]
+        [Route("api/Class/TeachingClass/{teacherName}")]
+        public IEnumerable<TeachingClassVM> GetTeachingClass(string teacherName)
+        {
+            var list = service.GetTeachingClass(teacherName);
+            return list.Select(i =>
+            {
+                var clazz = i.Class;
+                var vm = BaseVM<object>.ToModel<TeachingClassVM>(clazz);
+                vm.StudentQuantity = clazz.ClassMembers
+                .Where(cm => cm.Status != (int)ClassMemberEnums.STATUS_DISABLE).Count();
+                vm.SubjectId = i.SubjectId;
+                vm.ClassSubjectId = i.Id;
+                return vm;
+            });
+        }
     }
 
     public class AddStudentModel

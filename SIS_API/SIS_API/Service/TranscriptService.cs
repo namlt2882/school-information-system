@@ -133,5 +133,11 @@ namespace SIS_API.Service
             }
             repository.UpdateTranscripts(transcripts.ToList());
         }
+
+        public IEnumerable<AcademicTranscript> GetTranscriptOfClassSubject(int classSubjectId)
+        {
+            return repository.GetTranscriptOfClassSubject(classSubjectId);
+        }
+
     }
 }
