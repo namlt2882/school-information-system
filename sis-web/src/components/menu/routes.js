@@ -15,7 +15,12 @@ const routes = [
     {
         path: '/',
         exact: true,
-        main: ({ history }) => <DashBoard history={history} />
+        main: ({ history }) => {
+            if (AuthService.isTeacher()) {
+                return <ListClassTeacherView history={history} />
+            }
+            return <ListClass history={history} />
+        }
     },
     {
         path: '/teacher',
@@ -43,7 +48,7 @@ const routes = [
         exact: true,
         main: ({ history }) => {
             if (AuthService.isTeacher()) {
-                return <ListClassTeacherView history={history}/>
+                return <ListClassTeacherView history={history} />
             }
             return <ListClass history={history} />
         }

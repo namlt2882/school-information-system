@@ -124,13 +124,6 @@ export default MyMenu;
 
 const menus = [
 	{
-		name: 'Trang chủ',
-		to: '/',
-		exact: true,
-		icon: 'tachometer-alt',
-		roles: [1, 2]
-	},
-	{
 		name: 'Giáo viên',
 		to: '/teacher',
 		exact: false,
