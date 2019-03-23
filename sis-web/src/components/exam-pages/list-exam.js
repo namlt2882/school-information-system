@@ -8,6 +8,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { ExamAction } from '../../actions/exam-action';
 import { ExamService } from '../../services/exam-service';
 import AddExam from './add-exam';
+import UpdateExam from './update-exam';
 class ListExam extends Component {
     constructor(props) {
         super(props);
@@ -16,6 +17,7 @@ class ListExam extends Component {
             openModal: false,
             modalContent: null
         }
+        this.closeModal = this.closeModal.bind(this);
     }
     pushData(exams = this.props.exams) {
         let data1 = { ...data };
@@ -25,7 +27,13 @@ class ListExam extends Component {
                 No: i + 1,
                 Name: e.Name,
                 Percent: `${e.PercentRate} %`,
-                Action: null
+                Action: <Button color='primary' onClick={() => {
+                    let modalContent = <UpdateExam key={e.Id} examId={e.Id} closeModal={this.closeModal} />
+                    this.setState({
+                        openModal: true,
+                        modalContent: modalContent
+                    })
+                }}>Cập nhật</Button>
             }
         })
         data1.rows = rows;
@@ -39,7 +47,12 @@ class ListExam extends Component {
             this.incrementLoading();
         })
     }
-
+    closeModal() {
+        this.setState({
+            openModal: false,
+            modalContent: null
+        })
+    }
     render() {
         if (this.isLoading()) {
             return <PrimaryLoadingPage />
@@ -59,17 +72,12 @@ class ListExam extends Component {
                         data={data} /> : <span>Không có kì thi nào!</span>}
                 </div>
             </div>
-            <Modal isOpen={this.state.openModal} className='big-modal'>
+            <Modal isOpen={this.state.openModal}>
                 <ModalBody>
                     {this.state.modalContent}
                 </ModalBody>
                 <ModalFooter>
-                    <Button color='secondary' onClick={() => {
-                        this.setState({
-                            openModal: false,
-                            modalContent: null
-                        })
-                    }}>Đóng</Button>
+                    <Button color='secondary' onClick={this.closeModal}>Đóng</Button>
                 </ModalFooter>
             </Modal>
         </Container>);
