@@ -10,6 +10,7 @@ namespace SIS_API.Service
     public class ExaminationService
     {
         ExaminationRepository repository = new ExaminationRepository();
+        TranscriptRepository transcriptRepository = new TranscriptRepository();
         public Examination Add(Examination exam)
         {
             exam.Id = 0;
@@ -39,6 +40,14 @@ namespace SIS_API.Service
             origin.Name = exam.Name;
             origin.PercentRate = exam.PercentRate;
             repository.Update(origin);
+            // update active transcripts
+            var trans = transcriptRepository.GetAllActiveTranscriptOfExam(exam.Id);
+            trans.ForEach(t =>
+            {
+                t.ExamName = exam.Name;
+                t.PercentRate = exam.PercentRate;
+            });
+            transcriptRepository.UpdateTranscripts(trans);
         }
 
         public void Delete(int id)
