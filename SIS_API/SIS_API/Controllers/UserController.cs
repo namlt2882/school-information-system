@@ -15,7 +15,6 @@ namespace SIS_API.Controllers
     {
         UserService service = new UserService();
         ClassService classService = new ClassService();
-        // GET: api/User
         [HttpGet]
         [Route("api/User")]
         public IEnumerable<TeacherVM> GetAllUsers()
@@ -30,8 +29,7 @@ namespace SIS_API.Controllers
                 return vm;
             });
         }
-
-        // GET: api/User/5
+        
         [HttpGet]
         [Route("api/User/{username}")]
         public TeacherVM Get(string username)
@@ -39,8 +37,7 @@ namespace SIS_API.Controllers
             var user = service.GetByUsername(username);
             return user == null ? null : BaseVM<object>.ToModel<TeacherVM>(user);
         }
-
-        // POST: api/User
+        
         [HttpPost]
         [Route("api/User")]
         public TeacherVM Post([FromBody]UserCM value)
@@ -49,8 +46,7 @@ namespace SIS_API.Controllers
             User newUser = service.InsertUser(value.ToEntity());
             return BaseVM<object>.ToModel<TeacherVM>(newUser);
         }
-
-        // PUT: api/User/5
+        
         [HttpPut]
         [Route("api/User/{username}")]
         public void Put(string username, [FromBody]UserCM value)
@@ -59,13 +55,36 @@ namespace SIS_API.Controllers
             service.Update(value.ToEntity());
         }
 
-        // DELETE: api/User/5
+        [HttpPut]
+        [Route("api/User/{username}/SetPassword")]
+        public void SetPassword(string username, [FromBody]SetPasswordModel value)
+        {
+            service.SetPassword(username, value.Password);
+        }
+        
         [HttpDelete]
         [Route("api/User/{username}")]
         public void Delete(string username)
         {
             service.Delete(username);
         }
-    }
 
+        [HttpPut]
+        [Route("api/User/{username}/Ban")]
+        public void Ban(string username)
+        {
+            service.Ban(username);
+        }
+
+        [HttpPut]
+        [Route("api/User/{username}/Activate")]
+        public void Activate(string username)
+        {
+            service.Activate(username);
+        }
+    }
+    public class SetPasswordModel
+    {
+        public string Password { get; set; }
+    }
 }

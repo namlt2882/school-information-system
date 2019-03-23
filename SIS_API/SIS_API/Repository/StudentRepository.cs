@@ -15,6 +15,20 @@ namespace SIS_API.Repository
             return students;
         }
 
+        public IEnumerable<Student> GetNoClassStudent()
+        {
+            // get has class student (student are in some active class)
+            var hasClassStudent = from member in DbContext.ClassMembers
+                                  where member.Class.Status == (int)ClassEnums.STATUS_ACTIVE
+                                  && member.Status == (int)ClassMemberEnums.STATUS_ACTIVE
+                                  select member.Student;
+            var students = from student in DbContext.Students
+                           where student.Status == (int)StudentEnums.STATUS_ACTIVE 
+                           && !hasClassStudent.Any(hc => hc.Id == student.Id)
+                           select student;
+            return students;
+        }
+
         public IEnumerable<Student> GetGraduatedStudents()
         {
             var students = DbContext.Students
@@ -29,6 +43,6 @@ namespace SIS_API.Repository
                            select cm.Student;
             return students.ToList();
         }
-        
+
     }
 }

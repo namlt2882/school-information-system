@@ -51,29 +51,62 @@ namespace SIS_API.Repository
             lock (DbContext)
             {
                 var rs = new List<AcademicTranscript>();
-                using (DbContext)
+                using (var transaction = DbContext.Database.BeginTransaction())
                 {
-                    using (var transaction = DbContext.Database.BeginTransaction())
+                    try
                     {
-                        try
+                        foreach (AcademicTranscript at in list)
                         {
-                            foreach (AcademicTranscript at in list)
-                            {
-                                var tmp = DbContext.AcademicTranscripts.Add(at);
-                                rs.Add(tmp);
-                            }
-                            DbContext.SaveChanges();
-                            transaction.Commit();
+                            var tmp = DbContext.AcademicTranscripts.Add(at);
+                            rs.Add(tmp);
                         }
-                        catch (Exception e)
+                        DbContext.SaveChanges();
+                        transaction.Commit();
+                        foreach (AcademicTranscript at in list)
                         {
-                            transaction.Rollback();
-                            throw e;
+                            UpdateContext(at);
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        throw e;
                     }
                 }
                 return rs;
             }
+        }
+
+        public List<AcademicTranscript> GetAllActiveTranscriptOfSubject(int subjectId)
+        {
+            // get all active class subjects of active classes
+            var classSubjects = from cs in DbContext.ClassSubjects
+                                where cs.SubjectId == subjectId
+                                && cs.Status == (int)ClassSubjectEnums.STATUS_ACTIVE
+                                && cs.Class.Status == (int)ClassEnums.STATUS_ACTIVE
+                                select cs;
+            // join with academic transcript table, select active records
+            var trans = from t in DbContext.AcademicTranscripts
+                        join cs in classSubjects on t.ClassSubjectId equals cs.Id
+                        where t.Status == (int)TranscriptEnums.STATUS_ACTIVE
+                        select t;
+            return trans.ToList();
+        }
+
+        public List<AcademicTranscript> GetAllActiveTranscriptOfExam(int examId)
+        {
+            // get all active class subjects of active classes
+            var classSubjects = from cs in DbContext.ClassSubjects
+                                where cs.Status == (int)ClassSubjectEnums.STATUS_ACTIVE
+                                && cs.Class.Status == (int)ClassEnums.STATUS_ACTIVE
+                                select cs;
+            // join with academic transcript table, select active records
+            var trans = from t in DbContext.AcademicTranscripts
+                        join cs in classSubjects on t.ClassSubjectId equals cs.Id
+                        where t.Status == (int)TranscriptEnums.STATUS_ACTIVE
+                        && t.ExamId == examId
+                        select t;
+            return trans.ToList();
         }
 
         public List<AcademicTranscript> GetTranscriptByStudentsAndClassSubjects(List<int> studentIds, List<int> classSubjectIds)
@@ -101,6 +134,10 @@ namespace SIS_API.Repository
                             }
                             DbContext.SaveChanges();
                             transaction.Commit();
+                            foreach (AcademicTranscript at in list)
+                            {
+                                UpdateContext(at);
+                            }
                         }
                         catch (Exception e)
                         {

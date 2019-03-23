@@ -50,6 +50,7 @@ class ListClass extends Component {
     }
     componentDidMount() {
         available1();
+        document.title = 'Danh sách lớp học';
         ClassService.getAll().then(res => {
             this.props.setClasses(res.data);
             this.incrementLoading();
@@ -75,7 +76,7 @@ class ListClass extends Component {
                 <AddClass />
             </div>
             <div className='col-sm-12 row justify-content-center align-self-center'>
-                <div className='col-sm-10'>
+                <div className='col-sm-11'>
                     {data.rows.length > 0 ? <MDBDataTable
                         className='hide-last-row'
                         striped

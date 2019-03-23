@@ -10,6 +10,7 @@ namespace SIS_API.Service
     public class SubjectService
     {
         SubjectRepository repository = new SubjectRepository();
+        TranscriptRepository transcriptRepository = new TranscriptRepository();
         public Subject Add(Subject subject)
         {
             subject.Id = 0;
@@ -38,6 +39,13 @@ namespace SIS_API.Service
             var origin = repository.Get(subject.Id);
             origin.Name = subject.Name;
             repository.Update(origin);
+            // update active transcripts
+            var transcripts = transcriptRepository.GetAllActiveTranscriptOfSubject(subject.Id);
+            transcripts.ForEach(t =>
+            {
+                t.SubjectName = subject.Name;
+            });
+            transcriptRepository.UpdateTranscripts(transcripts);
         }
 
         public void Delete(int id)

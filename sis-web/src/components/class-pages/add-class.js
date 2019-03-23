@@ -143,7 +143,7 @@ class AddClass extends React.Component {
                                 <label>Giáo viên chủ nhiệm</label>
                                 <select value={this.state.manager} onChange={this.changeManager}>
                                     <option value='-1'>--</option>
-                                    {this.props.teachers.map(t =>
+                                    {this.props.teachers.filter(t => t.Status === 1).map(t =>
                                         <option value={t.Username}>
                                             {t.Name}
                                         </option>)}
@@ -179,7 +179,9 @@ class AddClass extends React.Component {
                                                 }
                                             }}>
                                             <option value='-1'>--</option>
-                                            {this.props.teachers.filter(teacher => teacher.SubjectId === s.Id).map(t =>
+                                            {this.props.teachers
+                                                .filter(teacher => teacher.Status === 1 && teacher.SubjectId === s.Id)
+                                                .map(t =>
                                                 <option value={t.Username.trim()}>{t.Name}</option>)}
                                         </select>
                                     }

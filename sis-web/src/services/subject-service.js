@@ -6,5 +6,11 @@ export const SubjectService = {
     },
     getAll: () => {
         return AuthRequest.get('Subject');
+    },
+    update: (id, name) => {
+        return AuthRequest.put('Subject', {
+            Id: id,
+            Name: name
+        });
     }
 }

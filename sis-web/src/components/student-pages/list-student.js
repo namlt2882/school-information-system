@@ -17,6 +17,7 @@ class ListStudent extends Component {
     }
     componentDidMount() {
         available1();
+        document.title = 'Danh sách học sinh';
         StudentService.getAll().then(res => {
             let list = res.data;
             this.props.setStudents(list);

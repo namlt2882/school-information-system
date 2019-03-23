@@ -11,6 +11,9 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import TeacherDetail from './teacher-detail';
 import { SubjectAction } from '../../actions/subject-action';
 import { SubjectService } from '../../services/subject-service';
+import { Link } from 'react-router-dom'
+import TeacherStatus from './teacher-status';
+
 class ListTeacher extends Component {
     constructor(props) {
         super(props);
@@ -20,9 +23,11 @@ class ListTeacher extends Component {
             modalContent: null
         }
         this.pushData = this.pushData.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
     componentDidMount() {
         available1();
+        document.title = 'Danh sách giáo viên'
         TeacherService.getAll().then(res => {
             this.props.setTeachers(res.data);
             this.incrementLoading();
@@ -41,10 +46,16 @@ class ListTeacher extends Component {
                 No: i + 1,
                 Name: t.Name,
                 Subject: subject ? subject.Name : '',
-                HomeroomClass: t.HomeroomClass.map((hc, i) => `${i > 0 ? ', ' : ''}${hc.Name}`),
+                HomeroomClass: t.HomeroomClass.map((hc, i) =>
+                    [
+                        (i > 0 ? ', ' : ''),
+                        <Link target='_blank' to={`/class/${hc.Id}/view`}>{hc.Name}</Link>
+                    ]),
                 TeachingClassQuantity: `${t.TeachingClassQuantity} lớp`,
+                Status: <TeacherStatus status={t.Status} />,
                 Action: <Button color='primary' onClick={() => {
-                    let modalContent = <TeacherDetail teacher={t} />
+                    let modalContent = <TeacherDetail closeModal={this.closeModal} key={t.Username} />
+                    this.props.setTeacher(t);
                     this.setState({
                         openModal: true,
                         modalContent: modalContent
@@ -54,6 +65,12 @@ class ListTeacher extends Component {
         })
         data1.rows = rows;
         return data1;
+    }
+    closeModal() {
+        this.setState({
+            openModal: false,
+            modalContent: null
+        })
     }
     render() {
         if (this.isLoading()) {
@@ -75,17 +92,12 @@ class ListTeacher extends Component {
                             data={data} /> : <span>Không có giáo viên nào!</span>}
                     </div>
                 </div>
-                <Modal isOpen={this.state.openModal} className='big-modal'>
+                <Modal isOpen={this.state.openModal} className='normal-modal'>
                     <ModalBody>
                         {this.state.modalContent}
                     </ModalBody>
                     <ModalFooter>
-                        <Button color='secondary' onClick={() => {
-                            this.setState({
-                                openModal: false,
-                                modalContent: null
-                            })
-                        }}>Đóng</Button>
+                        <Button color='secondary' onClick={this.closeModal}>Đóng</Button>
                     </ModalFooter>
                 </Modal>
             </Container>);
@@ -115,6 +127,10 @@ const data = {
             field: 'TeachingClassQuantity'
         },
         {
+            label: 'Tình trạng',
+            field: 'Status'
+        },
+        {
             label: '',
             field: 'Action'
         }
@@ -133,6 +149,9 @@ const mapDispatchToProps = dispatch => ({
     },
     setSubjects: (list) => {
         dispatch(SubjectAction.setSubjects(list));
+    },
+    setTeacher: (teacher) => {
+        dispatch(TeacherAction.setTeacher(teacher));
     }
 })
 

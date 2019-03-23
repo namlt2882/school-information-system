@@ -10,7 +10,8 @@ namespace SIS_API.Utility
         ROLE_ADMIN = 1,
         ROLE_TEACHER = 2,
         STATUS_ACTIVE = 1,
-        STATUS_DISABLE = 0
+        STATUS_DISABLE = 0,
+        STATUS_BANNED = 2
     }
 
     public enum SubjectEnums

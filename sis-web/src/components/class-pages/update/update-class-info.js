@@ -28,7 +28,7 @@ class UpdateClassInfo extends Component {
         this.setState({
             isOpen: true,
             name: clazz.Name,
-            homeroomTeacher: clazz.HomeroomTeacher ? clazz.HomeroomTeacher.Username : null,
+            homeroomTeacher: clazz.HomeroomTeacher ? clazz.HomeroomTeacher.Username.trim() : null,
             loading: false
         });
     }

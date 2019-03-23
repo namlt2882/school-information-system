@@ -6,5 +6,12 @@ export const ExamService = {
     },
     getAll: () => {
         return AuthRequest.get('Examination');
+    },
+    update: (id, name, percentRate) => {
+        return AuthRequest.put('Examination', {
+            Id: id,
+            Name: name,
+            PercentRate: percentRate
+        });
     }
 }

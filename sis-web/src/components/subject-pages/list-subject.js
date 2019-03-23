@@ -9,6 +9,7 @@ import AddSubject from './add-subject';
 import { MDBDataTable } from 'mdbreact'
 import { Container, Header, Button } from 'semantic-ui-react';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import UpdateSubject from './update-subject';
 class ListSubject extends Component {
     constructor(props) {
         super(props);
@@ -17,6 +18,7 @@ class ListSubject extends Component {
             openModal: false,
             modalContent: null
         }
+        this.closeModal = this.closeModal.bind(this);
     }
     pushData(subjects = this.props.subjects) {
         let data1 = { ...data };
@@ -26,12 +28,13 @@ class ListSubject extends Component {
                 No: i + 1,
                 Name: s.Name,
                 Action: <Button color='primary' onClick={() => {
-                    let modalContent = <SubjectDetail subject={s} />
+                    let modalContent = <UpdateSubject key={s.Id} subjectId={s.Id}
+                        closeModal={this.closeModal} />
                     this.setState({
                         openModal: true,
                         modalContent: modalContent
                     })
-                }}>Chi tiết</Button>
+                }}>Cập nhật</Button>
             }
         })
         data1.rows = rows;
@@ -39,12 +42,18 @@ class ListSubject extends Component {
     }
     componentDidMount() {
         available1();
+        document.title = 'Danh sách môn học'
         SubjectService.getAll().then(res => {
             this.props.setSubjects(res.data);
             this.incrementLoading();
         })
     }
-
+    closeModal() {
+        this.setState({
+            openModal: false,
+            modalContent: null
+        })
+    }
     render() {
         if (this.isLoading()) {
             return <PrimaryLoadingPage />
@@ -64,17 +73,13 @@ class ListSubject extends Component {
                         data={data} /> : <span>Không thấy môn học nào!</span>}
                 </div>
             </div>
-            <Modal isOpen={this.state.openModal} className='big-modal'>
+            <Modal isOpen={this.state.openModal}>
+                <ModalHeader>Cập nhật môn học</ModalHeader>
                 <ModalBody>
                     {this.state.modalContent}
                 </ModalBody>
                 <ModalFooter>
-                    <Button color='secondary' onClick={() => {
-                        this.setState({
-                            openModal: false,
-                            modalContent: null
-                        })
-                    }}>Hủy</Button>
+                    <Button color='secondary' onClick={this.closeModal}>Hủy</Button>
                 </ModalFooter>
             </Modal>
         </Container>);

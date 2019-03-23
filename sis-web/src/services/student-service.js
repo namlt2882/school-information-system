@@ -6,5 +6,8 @@ export const StudentService = {
     },
     getAll: () => {
         return AuthRequest.get('Student');
+    },
+    getNoClassStudent: () => {
+        return AuthRequest.get('Student/GetNoClassStudent');
     }
 }

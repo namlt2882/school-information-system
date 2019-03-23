@@ -20,6 +20,7 @@ namespace SIS_API.ViewModel
         public Nullable<int> SubjectId { get; set; }
         public IEnumerable<ClassVM> HomeroomClass { get; set; } = new List<ClassVM>();
         public int TeachingClassQuantity { get; set; }
+        public int Status { get; set; }
     }
 
     public class UserCM : BaseVM<User>
