@@ -33,5 +33,14 @@ export const ClassService = {
     },
     getTeachingClass: (username) => {
         return AuthRequest.get(`Class/TeachingClass/${username}`);
+    },
+    addStudents: (data) => {
+        return AuthRequest.post('Class/AddStudent', data);
+    },
+    removeStudent: (classId, studentId) => {
+        return AuthRequest.put('Class/RemoveStudent', {
+            ClassId: classId,
+            StudentIds: [studentId]
+        });
     }
 }

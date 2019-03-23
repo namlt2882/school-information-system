@@ -8,5 +8,9 @@ export const StudentAction = {
     addStudent: (student) => ({
         type: Types.ADD_STUDENT,
         student
+    }),
+    deleteStudent: (student) => ({
+        type: Types.DELETE_STUDENT,
+        student
     })
 }

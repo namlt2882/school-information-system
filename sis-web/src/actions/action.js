@@ -20,6 +20,7 @@ export const ADD_CLASS = 'ADD_CLASS'
 //student
 export const SET_STUDENTS = 'SET_STUDENTS'
 export const ADD_STUDENT = 'ADD_STUDENT'
+export const DELETE_STUDENT = 'DELETE_STUDENT'
 
 //transcript
 export const SET_TRANSCRIPTS = 'SET_TRANSCRIPTS'

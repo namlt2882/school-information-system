@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import UpdateClassInfo from './update/update-class-info';
 import UpdateClassSubject from './update/update-class-subject';
 import StudentTranscript from '../transcript-pages/student-transcript';
+import AddClassMember from './add-class-member';
 library.add(faPen);
 
 class ClassDetail extends Component {
@@ -27,6 +28,7 @@ class ClassDetail extends Component {
             isOpenTranscript: false,
             transcriptContent: null
         }
+        this.deleteStudent = this.deleteStudent.bind(this);
     }
 
     componentWillMount() {
@@ -49,6 +51,21 @@ class ClassDetail extends Component {
             this.props.setSubjects(list);
             this.incrementLoading();
         })
+        
+    }
+
+    deleteStudent(student) {
+        let clazz = this.props.clazz;
+        if (window.confirm(`Hành động này sẽ xóa ${student.LastName} ${student.FirstName} ra khỏi lớp ${clazz.Name}. Bảng điểm của học sinh này có thể bị ảnh hưởng, xác nhận xóa?`)) {
+            ClassService.removeStudent(clazz.Id, student.Id)
+                .then(res => {
+                    clazz.Students = clazz.Students.filter(s => s.Id !== student.Id);
+                    this.props.setClass(clazz);
+                }).catch(err => {
+                    window.alert('Tác vụ thất bại, vui lòng thử lại sau!');
+                    console.error(err);
+                })
+        }
     }
 
     pushData(students) {
@@ -71,7 +88,9 @@ class ClassDetail extends Component {
                                     transcriptContent: transcriptContent
                                 })
                             }}>Bảng điểm</Button>,
-                        <Button color='secondary'>Xóa</Button>]
+                        <Button color='secondary' onClick={() => {
+                            this.deleteStudent(s);
+                        }}>Xóa</Button>]
                 }
             })
         }
@@ -85,7 +104,7 @@ class ClassDetail extends Component {
         let clazz = this.props.clazz;
         document.title = `Thông tin lớp ${clazz.Name}`
         let data1 = this.pushData(clazz.Students);
-        let average = 0;
+        let average = parseFloat(0);
         return (<Container>
             <div className='col-sm-12 row'>
                 {/* Class info */}
@@ -149,12 +168,12 @@ class ClassDetail extends Component {
                                     return <tr>
                                         <td>{s.Name}</td>
                                         <td>{s.Teacher ? s.Teacher.Name : null}</td>
-                                        <td>{s.AverageScore}</td>
+                                        <td>{s.AverageScore.toFixed(2)}</td>
                                     </tr>
                                 })}
                                 <tr>
                                     <td></td>
-                                    <td>Trung bình:</td>
+                                    <td><b>Trung bình các môn</b>:</td>
                                     <td>{(1.0 * average / clazz.Subjects.length).toFixed(2)}</td>
                                 </tr>
                             </tbody>
@@ -163,13 +182,15 @@ class ClassDetail extends Component {
                     </div>
                 </div>
                 {/* Student in class */}
-                <div className='col-sm-7 row'>
-                    <div className='col-sm-12 row'>
-                        <div className='col-sm-12 text-center my-header' style={{ marginBottom: '0px' }}>
+                <div className='col-sm-7'>
+                    <div style={{ width: '100%', boxSizing: 'border-box' }}>
+                        <div className='text-center my-header'
+                            style={{ marginBottom: '0px', width: '100%', boxSizing: 'border-box' }}>
                             <h3><Icon name='users' />Học sinh trong lớp</h3>
                         </div>
                     </div>
-                    <div className='col-sm-12'>
+                    <AddClassMember />
+                    <div style={{ width: '100%', boxSizing: 'border-box' }}>
                         {data1.rows.length > 0 ? <MDBDataTable
                             className='hide-last-row'
                             striped
