@@ -50,6 +50,7 @@ class ListClass extends Component {
     }
     componentDidMount() {
         available1();
+        document.title = 'Danh sách lớp học';
         ClassService.getAll().then(res => {
             this.props.setClasses(res.data);
             this.incrementLoading();

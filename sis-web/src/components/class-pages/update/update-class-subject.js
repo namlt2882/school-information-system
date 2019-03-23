@@ -173,7 +173,9 @@ class UpdateClassSubject extends Component {
                                             }
                                         }}>
                                         <option value='-1'>--</option>
-                                        {this.props.teachers.filter(teacher => teacher.SubjectId === s.Id).map(t =>
+                                        {this.props.teachers
+                                            .filter(teacher => teacher.Status === 1 && teacher.SubjectId === s.Id)
+                                            .map(t =>
                                             <option value={t.Username.trim()}>{t.Name}</option>)}
                                     </select>
                                 }

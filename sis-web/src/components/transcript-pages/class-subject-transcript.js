@@ -85,7 +85,7 @@ class ClassSubjectTranscript extends Component {
     }
 
     updateTranscript() {
-        if (window.confirm('Are you sure?')) {
+        if (window.confirm(`Cập nhật lại điểm môn ${this.state.subjectName} của lớp ${this.props.className}?`)) {
             this.setState({ isLoading: true });
             let transcripts = this.state.transcriptMap.entries();
             transcripts = Array.from(transcripts).map(e => e[1]);
@@ -94,11 +94,11 @@ class ClassSubjectTranscript extends Component {
                 Score: t.Score
             }))
             TranscriptService.updateTranscripts(data).then(res => {
-                window.alert('Update successfully!');
+                window.alert('Cập nhật thành công!');
                 this.setState({ isLoading: false });
                 this.props.closeModal();
             }).catch(err => {
-                window.alert('Service unavailable!');
+                window.alert('Tác vụ thất bại, vui lòng thử lại sau!');
                 this.setState({ isLoading: false });
             })
         }

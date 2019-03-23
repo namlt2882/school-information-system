@@ -83,6 +83,7 @@ class ClassDetail extends Component {
             return <PrimaryLoadingPage />
         }
         let clazz = this.props.clazz;
+        document.title = `Thông tin lớp ${clazz.Name}`
         let data1 = this.pushData(clazz.Students);
         let average = 0;
         return (<Container>

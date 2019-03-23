@@ -47,7 +47,7 @@ class ListClassTeacherView extends Component {
                     {describeClassStatus(c.Status)}
                 </Label>,
                 Action: <Button color='primary' onClick={() => {
-                    let modalContent = <ClassSubjectTranscript closeModal={this.closeModal} classSubjectId={c.ClassSubjectId} />
+                    let modalContent = <ClassSubjectTranscript className={c.Name} closeModal={this.closeModal} classSubjectId={c.ClassSubjectId} />
                     this.setState({
                         openModal: true,
                         modalContent: modalContent
@@ -60,6 +60,7 @@ class ListClassTeacherView extends Component {
     }
     componentDidMount() {
         available1();
+        document.title = 'Danh sách lớp học';
         let username = AuthService.getUsername();
         ClassService.getTeachingClass(username).then(res => {
             this.props.setClasses(res.data);

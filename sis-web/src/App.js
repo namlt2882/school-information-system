@@ -23,7 +23,7 @@ class App extends Component {
           {/* <Route path='' exact={false}> */}
           <div>
             <MyMenu />
-            <div className="container" style={{
+            <div className="container arial" style={{
               padding: '20px',
               zIndex: '0',
               backgroundColor: 'white',

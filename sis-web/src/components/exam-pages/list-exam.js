@@ -33,6 +33,7 @@ class ListExam extends Component {
     }
     componentDidMount() {
         available1();
+        document.title = 'Danh sách kì thi';
         ExamService.getAll().then(res => {
             this.props.setExams(res.data);
             this.incrementLoading();

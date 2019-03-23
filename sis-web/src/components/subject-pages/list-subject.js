@@ -39,6 +39,7 @@ class ListSubject extends Component {
     }
     componentDidMount() {
         available1();
+        document.title = 'Danh sách môn học'
         SubjectService.getAll().then(res => {
             this.props.setSubjects(res.data);
             this.incrementLoading();
