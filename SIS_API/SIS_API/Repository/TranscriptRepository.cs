@@ -51,25 +51,26 @@ namespace SIS_API.Repository
             lock (DbContext)
             {
                 var rs = new List<AcademicTranscript>();
-                using (DbContext)
+                using (var transaction = DbContext.Database.BeginTransaction())
                 {
-                    using (var transaction = DbContext.Database.BeginTransaction())
+                    try
                     {
-                        try
+                        foreach (AcademicTranscript at in list)
                         {
-                            foreach (AcademicTranscript at in list)
-                            {
-                                var tmp = DbContext.AcademicTranscripts.Add(at);
-                                rs.Add(tmp);
-                            }
-                            DbContext.SaveChanges();
-                            transaction.Commit();
+                            var tmp = DbContext.AcademicTranscripts.Add(at);
+                            rs.Add(tmp);
                         }
-                        catch (Exception e)
+                        DbContext.SaveChanges();
+                        transaction.Commit();
+                        foreach (AcademicTranscript at in list)
                         {
-                            transaction.Rollback();
-                            throw e;
+                            UpdateContext(at);
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        throw e;
                     }
                 }
                 return rs;
@@ -101,6 +102,10 @@ namespace SIS_API.Repository
                             }
                             DbContext.SaveChanges();
                             transaction.Commit();
+                            foreach (AcademicTranscript at in list)
+                            {
+                                UpdateContext(at);
+                            }
                         }
                         catch (Exception e)
                         {

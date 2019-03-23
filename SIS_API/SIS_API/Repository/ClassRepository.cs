@@ -1,6 +1,7 @@
 ﻿using SIS_API.Utility;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -81,6 +82,62 @@ namespace SIS_API.Repository
                           where c.Manager == teacherName && c.Status == (int)ClassSubjectEnums.STATUS_ACTIVE
                           select c;
             return classes;
+        }
+
+        public void UpdateClassess(List<Class> list)
+        {
+            lock (DbContext)
+            {
+                using (var transaction = DbContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        foreach (Class c in list)
+                        {
+                            DbContext.Entry(c).State = EntityState.Modified;
+                        }
+                        DbContext.SaveChanges();
+                        transaction.Commit();
+                        foreach (Class c in list)
+                        {
+                            UpdateContext(c);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        throw e;
+                    }
+                }
+            }
+        }
+
+        public void UpdateClassSubjects(List<ClassSubject> list)
+        {
+            lock (DbContext)
+            {
+                using (var transaction = DbContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        foreach (ClassSubject cs in list)
+                        {
+                            DbContext.Entry(cs).State = EntityState.Modified;
+                        }
+                        DbContext.SaveChanges();
+                        transaction.Commit();
+                        foreach (ClassSubject cs in list)
+                        {
+                            UpdateContext(cs);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        throw e;
+                    }
+                }
+            }
         }
 
     }
