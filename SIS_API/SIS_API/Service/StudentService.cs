@@ -52,5 +52,10 @@ namespace SIS_API.Service
             origin.Status = (int)StudentEnums.STATUS_DISABLE;
             repository.Update(origin);
         }
+
+        public IEnumerable<Student> GetNoClassStudent()
+        {
+            return repository.GetNoClassStudent();
+        }
     }
 }

@@ -22,6 +22,14 @@ namespace SIS_API.Controllers
         }
 
         [HttpGet]
+        [Route("api/Student/GetNoClassStudent")]
+        public IEnumerable<StudentVM> GetNoClassStudent()
+        {
+            var students = service.GetNoClassStudent();
+            return students.Select(i => BaseVM<object>.ToModel<StudentVM>(i));
+        }
+
+        [HttpGet]
         [Route("api/Student/GetAllGratudatedStudents")]
         public IEnumerable<StudentVM> GetAllGraduatedStudents()
         {
