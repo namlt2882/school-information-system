@@ -42,5 +42,8 @@ export const ClassService = {
             ClassId: classId,
             StudentIds: [studentId]
         });
+    },
+    close: (classId) => {
+        return AuthRequest.put(`Class/${classId}/Close`);
     }
 }

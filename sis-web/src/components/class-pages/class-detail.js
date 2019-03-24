@@ -29,6 +29,7 @@ class ClassDetail extends Component {
             transcriptContent: null
         }
         this.deleteStudent = this.deleteStudent.bind(this);
+        this.closeClass = this.closeClass.bind(this);
     }
 
     componentWillMount() {
@@ -51,7 +52,7 @@ class ClassDetail extends Component {
             this.props.setSubjects(list);
             this.incrementLoading();
         })
-        
+
     }
 
     deleteStudent(student) {
@@ -68,9 +69,23 @@ class ClassDetail extends Component {
         }
     }
 
+    closeClass() {
+        let clazz = this.props.clazz;
+        if (window.confirm(`Hành động này sẽ đóng lớp ${clazz.Name} lại, không thể thêm học sinh hay chỉnh sửa thông tin của lớp học này. Xác nhận tiếp tục?`)) {
+            ClassService.close(clazz.Id).then(res => {
+                clazz.Status = 2;
+                this.props.setClass(clazz);
+            }).catch(err => {
+                window.alert('Tác vụ thất bại, vui lòng thử lại sau!');
+                console.error(err);
+            })
+        }
+    }
+
     pushData(students) {
         let data1 = { ...data };
         data1.rows = [];
+        let isClassActive = this.props.clazz.Status === 1;
         if (students) {
             data1.rows = students.map((s, i) => {
                 return {
@@ -88,7 +103,7 @@ class ClassDetail extends Component {
                                     transcriptContent: transcriptContent
                                 })
                             }}>Bảng điểm</Button>,
-                        <Button color='secondary' onClick={() => {
+                        <Button color='secondary' style={{ display: isClassActive ? 'inline-block' : 'none' }} onClick={() => {
                             this.deleteStudent(s);
                         }}>Xóa</Button>]
                 }
@@ -105,6 +120,7 @@ class ClassDetail extends Component {
         document.title = `Thông tin lớp ${clazz.Name}`
         let data1 = this.pushData(clazz.Students);
         let average = parseFloat(0);
+        let isActive = clazz.Status === 1;
         return (<Container>
             <div className='col-sm-12 row'>
                 {/* Class info */}
@@ -116,10 +132,10 @@ class ClassDetail extends Component {
                         </div>
                         <table className='col-sm-12'>
                             <tbody>
-                                <tr>
+                                {isActive ? <tr>
                                     <td></td>
                                     <td><UpdateClassInfo /></td>
-                                </tr>
+                                </tr> : null}
                                 <tr>
                                     <td><b>Tên lớp</b></td>
                                     <td>{clazz.Name}</td>
@@ -144,6 +160,10 @@ class ClassDetail extends Component {
                                     <td><b>Số lượng học sinh</b></td>
                                     <td>{clazz.Students.length}</td>
                                 </tr>
+                                {isActive ? <tr>
+                                    <td></td>
+                                    <td><Button color='orange' onClick={this.closeClass}>Đóng lớp</Button></td>
+                                </tr> : null}
                             </tbody>
                         </table>
                     </div>
@@ -151,9 +171,9 @@ class ClassDetail extends Component {
                         <div className='col-sm-12 text-center my-header'>
                             <h3><Icon name='info' />Các môn học hiện tại</h3>
                         </div>
-                        <div className='col-sm-12'>
+                        {isActive ? <div className='col-sm-12'>
                             <UpdateClassSubject />
-                        </div>
+                        </div> : null}
                         {clazz.Subjects.length > 0 ? <table className='col-sm-12' border='1'>
                             <thead>
                                 <tr>
@@ -189,7 +209,7 @@ class ClassDetail extends Component {
                             <h3><Icon name='users' />Học sinh trong lớp</h3>
                         </div>
                     </div>
-                    <AddClassMember />
+                    {isActive ? <AddClassMember /> : null}
                     <div style={{ width: '100%', boxSizing: 'border-box' }}>
                         {data1.rows.length > 0 ? <MDBDataTable
                             className='hide-last-row'

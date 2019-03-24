@@ -50,6 +50,7 @@ class StudentDetail extends Component {
             return <PrimaryLoadingPage />
         }
         let currentClass = student.CurrentClass;
+        let closedClasses = student.ClosedClasses;
         let isActive = student.Status === 1;
         let isGraduated = student.Status === 2;
         return (<Form className='row'>
@@ -96,6 +97,12 @@ class StudentDetail extends Component {
                 <Divider />,
                 <StudentTranscript key={`${currentClass.Id}-${student.Id}`}
                     classId={currentClass.Id} studentId={student.Id} />] : null}
+                {closedClasses.length > 0 ? [<label className='text-center'>Bảng điểm đã lưu</label>,
+                <Divider />,
+                closedClasses.map(cc => [
+                    <div className='bold-text text-center'>{`${cc.Name} (Đã đóng)`}</div>,
+                    <StudentTranscript key={`${cc.Id}-${student.Id}`}
+                        classId={cc.Id} studentId={student.Id} />])] : null}
             </div>
         </Form>);
     }

@@ -59,7 +59,7 @@ class AddExam extends React.Component {
                                 }} />
                         </Form.Field>
                         <Form.Field>
-                            <label>Trọng số trên tổng điểm</label>
+                            <label>Trọng số trên tổng điểm ({`0% <= x <= ${max}%`})</label>
                             <input type='number' required
                                 value={this.state.percent}
                                 min={0} max={max}

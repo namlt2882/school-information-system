@@ -46,7 +46,7 @@ class UpdateExam extends Component {
                     }} />
             </Form.Field>
             <Form.Field>
-                <label>Trọng số trên tổng điểm</label>
+                <label>Trọng số trên tổng điểm ({`0% <= x <= ${max}%`})</label>
                 <input type='number' value={this.state.percent} step='1'
                     min={0} max={max} required onChange={(e) => {
                         let val = e.target.value;
