@@ -10,6 +10,7 @@ import ListExam from '../exam-pages/list-exam';
 import ClassDetail from '../class-pages/class-detail';
 import { AuthService } from '../../services/auth-service';
 import ListClassTeacherView from '../class-pages/list-class-teacher-view';
+import PersonalPage from '../common/personal-page';
 
 const routes = [
     {
@@ -62,7 +63,12 @@ const routes = [
         path: '/exam',
         exact: false,
         main: () => <ListExam />
-    }
+    },
+    {
+        path: '/personal-info',
+        exact: false,
+        main: ({ match, history }) => <PersonalPage match={match} history={history}/>
+    },
 ];
 
 export default routes;

@@ -15,8 +15,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { AuthService } from '../../services/auth-service';
+import { withRouter } from 'react-router-dom'
 library.add(faTachometerAlt, faUsers, faBook, faUserGraduate,
 	faScroll, faUserCircle, faStream, faChalkboard);
+
 
 class MyMenu extends Component {
 	constructor(props) {
@@ -74,7 +76,7 @@ class MyMenu extends Component {
 									/>)
 								}
 								)}
-								<MyProfile dropdownProfile={this.state.dropdownProfile}
+								<ConnectedProfile dropdownProfile={this.state.dropdownProfile}
 									toggleProfile={this.toggleProfile} />
 							</Nav>
 						</Collapse>
@@ -104,7 +106,9 @@ class MyProfile extends React.Component {
 						<div className='col-sm-10' style={{ cursor: 'default' }}>
 							Chào, <b>{localStorage.getItem('name')}</b><br />
 						</div>
-						<DropdownItem>
+						<DropdownItem onClick={() => {
+							this.props.history.push('/personal-info');
+						}}>
 							Thông tin cá nhân
                             </DropdownItem>
 						<DropdownItem onClick={() => {
@@ -119,6 +123,7 @@ class MyProfile extends React.Component {
 		</NavItem>);
 	}
 }
+const ConnectedProfile = withRouter(MyProfile);
 
 export default MyMenu;
 
