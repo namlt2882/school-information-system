@@ -12,5 +12,9 @@ export const StudentAction = {
     deleteStudent: (student) => ({
         type: Types.DELETE_STUDENT,
         student
+    }),
+    setStudent: (student) => ({
+        type: Types.SET_STUDENT,
+        student
     })
 }

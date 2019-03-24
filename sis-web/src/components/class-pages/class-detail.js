@@ -269,6 +269,14 @@ export const sortSubjectAlphabetically = (subjects) => {
     })
 }
 
+export const sortStudentAlphabetically = (students) => {
+    students.sort((s1, s2) => {
+        let name1 = s1.FirstName.toUpperCase();
+        let name2 = s2.FirstName.toUpperCase();
+        return (name1 < name2) ? -1 : (name1 > name2) ? 1 : 0;
+    })
+}
+
 const mapStateToProps = (state) => ({
     clazz: state.clazz,
     teachers: state.teachers,
