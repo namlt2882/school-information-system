@@ -4,6 +4,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { connect } from 'react-redux'
 import { ExamAction } from '../../actions/exam-action';
 import { ExamService } from '../../services/exam-service';
+import { AuthService } from '../../services/auth-service';
 
 class AddExam extends React.Component {
     constructor(props) {
@@ -42,7 +43,7 @@ class AddExam extends React.Component {
     render() {
         let max = 100 - this.props.exams.reduce((acc, e) => { return acc + e.PercentRate }, 0);
         return (<div>
-            <Button color='primary' onClick={this.openModal}>Thêm kì thi</Button>
+            {AuthService.isManager() ? <Button color='primary' onClick={this.openModal}>Thêm kì thi</Button> : null}
             <Modal isOpen={this.state.isOpen}>
                 <ModalHeader className='text-center'>
                     Thêm kì thi

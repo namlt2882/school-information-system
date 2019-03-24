@@ -53,7 +53,7 @@ namespace SIS_API.Controllers
                         var vm = BaseVM<object>.ToModel<SubjectVM>(cs.Subject);
                         vm.Teacher = cs.User != null ? BaseVM<object>.ToModel<UserVM>(cs.User) : null;
                         //calculate subject average
-                        var subjectAverage = cs.AcademicTranscripts
+                        double subjectAverage = cs.AcademicTranscripts
                         .Where(tran => tran.Status != (int)TranscriptEnums.STATUS_DISABLE)
                         .Aggregate(0d, (acc, t) =>
                         {
@@ -61,7 +61,10 @@ namespace SIS_API.Controllers
                             acc += (score * t.PercentRate.Value) / 100;
                             return acc;
                         });
-                        subjectAverage /= rs.Students.Count;
+                        if (rs.Students.Count > 0)
+                        {
+                            subjectAverage /= rs.Students.Count;
+                        }
                         vm.AverageScore = subjectAverage;
                         return vm;
                     })
