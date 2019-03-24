@@ -77,7 +77,7 @@ class AddClassMember extends Component {
             </ModalHeader>,
             <ModalBody className='row'>
                 <div className='col-sm-5'>
-                    <label>Học sinh chưa có lớp:</label>
+                    <label>Học sinh chưa có lớp ({students.length}):</label>
                     <MultiSelect
                         data={students}
                         value={selectedStudents}

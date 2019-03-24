@@ -158,5 +158,35 @@ namespace SIS_API.Repository
             return rs;
         }
 
+        public IEnumerable<AcademicTranscript> GetStudentCurrentTranscript(int studentId)
+        {
+            //get active class subject
+            var cs = from c in DbContext.ClassSubjects
+                     where c.Status == (int)ClassSubjectEnums.STATUS_ACTIVE
+                     && c.Class.Status==(int)ClassEnums.STATUS_ACTIVE
+                     select c;
+            //get transcript of student
+            var trans = from t in DbContext.AcademicTranscripts
+                        join c in cs on t.ClassSubjectId equals c.Id
+                        where t.StudentId == studentId 
+                        && t.Status == (int)TranscriptEnums.STATUS_ACTIVE
+                        select t;
+            return trans;
+        }
+
+        public IEnumerable<AcademicTranscript> GetTranscriptsOfClass(int classId)
+        {
+            // get class subject of class
+            var classSubjects = from cs in DbContext.ClassSubjects
+                                where cs.ClassId == classId 
+                                && cs.Status == (int)ClassSubjectEnums.STATUS_ACTIVE
+                                select cs;
+            // get transcript of class
+            var transcripts = from tran in DbContext.AcademicTranscripts
+                              join cs in classSubjects on tran.ClassSubjectId equals cs.Id
+                              where tran.Status == (int)TranscriptEnums.STATUS_ACTIVE
+                              select tran;
+            return transcripts;
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace SIS_API.Service
     public class ClassService
     {
         ClassRepository repository = new ClassRepository();
+        TranscriptRepository transcriptRepository = new TranscriptRepository();
         public IEnumerable<Class> GetAll()
         {
             return repository.GetAll();
@@ -52,13 +53,6 @@ namespace SIS_API.Service
         {
             var origin = repository.Get(id);
             origin.Status = (int)ClassEnums.STATUS_DISABLE;
-            repository.Update(origin);
-        }
-
-        public void Close(int id)
-        {
-            var origin = repository.Get(id);
-            origin.Status = (int)ClassEnums.STATUS_CLOSED;
             repository.Update(origin);
         }
 
@@ -143,7 +137,7 @@ namespace SIS_API.Service
                 }
                 else
                 {
-                    if(found.Status == (int)ClassSubjectEnums.STATUS_DISABLE)
+                    if (found.Status == (int)ClassSubjectEnums.STATUS_DISABLE)
                     {
                         rs.Add(found);
                     }
@@ -203,6 +197,30 @@ namespace SIS_API.Service
         public List<ClassSubject> GetTeachingClass(string teacherName)
         {
             return repository.GetTeachingClass(teacherName).ToList();
+        }
+
+        public Class GetStudentCurrentClass(int studentId)
+        {
+            return repository.GetStudentCurrentClass(studentId).FirstOrDefault();
+        }
+
+        public void Close(int classId)
+        {
+            var origin = repository.Get(classId);
+            origin.Status = (int)ClassEnums.STATUS_CLOSED;
+            repository.Update(origin);
+            // update transcript status
+            var transcripts = transcriptRepository.GetTranscriptsOfClass(classId).ToList();
+            transcripts.ForEach(t =>
+            {
+                t.Status = (int)TranscriptEnums.STATUS_RESERVE;
+            });
+            transcriptRepository.UpdateTranscripts(transcripts);
+        }
+
+        public IEnumerable<Class> GetStudentClosedClass(int studentId)
+        {
+            return repository.GetStudentClosedClass(studentId);
         }
 
     }

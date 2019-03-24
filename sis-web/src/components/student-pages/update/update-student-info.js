@@ -2,11 +2,11 @@ import React from 'react';
 import { Form, Button } from 'semantic-ui-react';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { connect } from 'react-redux'
-import { StudentAction } from '../../actions/student-action';
-import { StudentService } from '../../services/student-service';
+import { StudentAction } from '../../../actions/student-action';
+import { StudentService } from '../../../services/student-service';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
 
-class AddStudent extends React.Component {
+class UpdateStudentInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,28 +17,34 @@ class AddStudent extends React.Component {
             loading: false
         }
         this.openModal = this.openModal.bind(this);
-        this.addStudent = this.addStudent.bind(this);
+        this.updateStudent = this.updateStudent.bind(this);
         this.changeBirthday = this.changeBirthday.bind(this);
     }
     openModal() {
+        let student = this.props.student;
+        let birthday = student.Birthday ? new Date(student.Birthday) : new Date();
         this.setState({
             isOpen: true,
-            firstName: '',
-            lastName: '',
-            birthDay: new Date()
+            firstName: student.FirstName,
+            lastName: student.LastName,
+            birthDay: birthday
         });
     }
-    addStudent() {
+    updateStudent() {
+        let student = this.props.student;
         this.setState({ loading: true });
         let data = {
+            Id: student.Id,
             FirstName: this.state.firstName,
             LastName: this.state.lastName,
             Birthday: this.state.birthDay ? this.state.birthDay.toISOString().slice(0, 10) : null
         }
-        StudentService.addStudent(data).then(res => {
-            let rs = res.data;
-            rs.FullName = `${data.LastName} ${data.FirstName}`
-            this.props.addStudent(rs);
+        StudentService.update(data).then(res => {
+            student.FirstName = data.FirstName;
+            student.LastName = data.LastName;
+            student.Birthday = data.Birthday;
+            student.FullName = `${data.LastName} ${data.FirstName}`
+            this.props.setStudent(student);
             this.setState({ isOpen: false, loading: false });
         }).catch(err => {
             alert('Service unavailable!');
@@ -50,14 +56,16 @@ class AddStudent extends React.Component {
         this.setState({ birthDay: val })
     }
     render() {
+        let student = this.props.student;
         return (<div>
-            <Button color='primary' onClick={this.openModal}>Thêm học sinh</Button>
+            <Button color='primary' style={{ margin: '10px 0px 10px 0px' }}
+                onClick={this.openModal}>Cập nhật</Button><br />
             <Modal isOpen={this.state.isOpen}>
                 <ModalHeader className='text-center'>
-                    Thêm học sinh
+                    Học sinh {` ${student.FullName}`}
                 </ModalHeader>
                 <ModalBody>
-                    <Form onSubmit={this.addStudent} loading={this.state.loading}>
+                    <Form onSubmit={this.updateStudent} loading={this.state.loading}>
                         <Form.Field>
                             <label>Họ</label>
                             <input type='text' placeholder='Họ' required
@@ -77,7 +85,7 @@ class AddStudent extends React.Component {
                         <Form.Field>
                             <label>Ngày sinh</label>
                             <DatePicker max={new Date()}
-                                defaultValue={new Date()}
+                                defaultValue={this.state.birthDay}
                                 onChange={this.changeBirthday}>
                             </DatePicker>
                         </Form.Field>
@@ -87,7 +95,7 @@ class AddStudent extends React.Component {
                 <ModalFooter>
                     <Button color='primary' onClick={() => {
                         this.refs.btn.click();
-                    }}>OK</Button>
+                    }}>Cập nhật</Button>
                     <Button color='secondary' onClick={() => {
                         this.setState({ isOpen: false });
                     }}>Hủy</Button>
@@ -98,13 +106,13 @@ class AddStudent extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    students: state.students
+    student: state.student
 })
 
 const mapDispatchToProps = dispatch => ({
-    addStudent: (student) => {
-        dispatch(StudentAction.addStudent(student));
+    setStudent: (student) => {
+        dispatch(StudentAction.setStudent(student));
     }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddStudent);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateStudentInfo);

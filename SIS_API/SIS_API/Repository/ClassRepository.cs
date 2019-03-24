@@ -18,20 +18,12 @@ namespace SIS_API.Repository
             return classess;
         }
 
-        public Class GetClassessOfHomeromeTeacher(string teacher)
+        public IEnumerable<Class> GetAllActive()
         {
-            var clazz = DbContext.Classes
-                .Where(x => x.Manager == teacher && x.Status != (int)ClassEnums.STATUS_DISABLE)
-                .FirstOrDefault();
-            return clazz;
-        }
-
-        public List<Class> GetClassOfTeacher(string teacher)
-        {
-            var classess = DbContext.ClassSubjects
-                .Where(x => x.Teacher == teacher && x.Status != (int)ClassEnums.STATUS_DISABLE)
-                .Select(x => x.Class);
-            return classess.ToList();
+            var classess = from c in DbContext.Classes
+                           where c.Status == (int)ClassEnums.STATUS_ACTIVE
+                           select c;
+            return classess;
         }
 
         public List<ClassMember> GetAllClassMember(int classId)
@@ -42,27 +34,10 @@ namespace SIS_API.Repository
             return cms.ToList();
         }
 
-        public ClassMember GetClassMember(int classId, int studentId)
-        {
-            var cm = DbContext.ClassMembers
-                .Where(x => x.ClassId == classId && x.StudentId == studentId)
-                .FirstOrDefault();
-            return cm;
-        }
-
         public List<ClassSubject> GetSubjectOfClass(int classId)
         {
             var css = from cs in DbContext.ClassSubjects
                       where cs.ClassId == classId && cs.Status == (int)ClassSubjectEnums.STATUS_ACTIVE
-                      select cs;
-            return css.ToList();
-        }
-
-        public List<ClassSubject> GetClassSubjectInList(int classId, List<int> subjectIds)
-        {
-            var css = from cs in DbContext.ClassSubjects
-                      where cs.ClassId == classId && subjectIds.Contains(cs.ClassId)
-                      && cs.Status == (int)ClassSubjectEnums.STATUS_ACTIVE
                       select cs;
             return css.ToList();
         }
@@ -138,6 +113,64 @@ namespace SIS_API.Repository
                     }
                 }
             }
+        }
+
+        public void UpdateClassMembers(List<ClassMember> list)
+        {
+            lock (DbContext)
+            {
+                using (var transaction = DbContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        foreach (ClassMember cm in list)
+                        {
+                            DbContext.Entry(cm).State = EntityState.Modified;
+                        }
+                        DbContext.SaveChanges();
+                        transaction.Commit();
+                        foreach (ClassMember cm in list)
+                        {
+                            UpdateContext(cm);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        throw e;
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<Class> GetStudentCurrentClass(int studentId)
+        {
+            var classes = from cs in DbContext.ClassMembers
+                          where cs.Status == (int)ClassMemberEnums.STATUS_ACTIVE
+                          && cs.Class.Status == (int)ClassEnums.STATUS_ACTIVE
+                          && cs.StudentId == studentId
+                          select cs.Class;
+            return classes;
+        }
+
+        public IEnumerable<Class> GetStudentClosedClass(int studentId)
+        {
+            var classes = from cs in DbContext.ClassMembers
+                          where cs.Status == (int)ClassMemberEnums.STATUS_ACTIVE
+                          && cs.Class.Status == (int)ClassEnums.STATUS_CLOSED
+                          && cs.StudentId == studentId
+                          select cs.Class;
+            return classes;
+        }
+
+        public IEnumerable<ClassMember> GetStudentCurrentClassMember(int studentId)
+        {
+            var classMember = from cm in DbContext.ClassMembers
+                          where cm.Status == (int)ClassMemberEnums.STATUS_ACTIVE
+                          && cm.Class.Status == (int)ClassEnums.STATUS_ACTIVE
+                          && cm.StudentId == studentId
+                          select cm;
+            return classMember;
         }
 
     }

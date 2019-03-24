@@ -10,7 +10,8 @@ namespace SIS_API.Service
     public class StudentService
     {
         StudentRepository repository = new StudentRepository();
-
+        TranscriptRepository transcriptRepository = new TranscriptRepository();
+        ClassRepository classRepository = new ClassRepository();
         public IEnumerable<Student> GetAllActive()
         {
             return repository.GetAll();
@@ -51,6 +52,33 @@ namespace SIS_API.Service
             var origin = repository.Get(id);
             origin.Status = (int)StudentEnums.STATUS_DISABLE;
             repository.Update(origin);
+            RemoveAllCurrentClassRelation(id);
+        }
+
+        public void SetGraduated(int id)
+        {
+            var origin = repository.Get(id);
+            origin.Status = (int)StudentEnums.STATUS_GRADUATED;
+            repository.Update(origin);
+            RemoveAllCurrentClassRelation(id);
+        }
+
+        public void RemoveAllCurrentClassRelation(int studentId)
+        {
+            // remove class member
+            var classMembers = classRepository.GetStudentCurrentClassMember(studentId).ToList();
+            classMembers.ForEach(cm =>
+            {
+                cm.Status = (int)ClassMemberEnums.STATUS_DISABLE;
+            });
+            classRepository.UpdateClassMembers(classMembers);
+            // remove transcript
+            var transcripts = transcriptRepository.GetStudentCurrentTranscript(studentId).ToList();
+            transcripts.ForEach(t =>
+            {
+                t.Status = (int)TranscriptEnums.STATUS_DISABLE;
+            });
+            transcriptRepository.UpdateTranscripts(transcripts);
         }
 
         public IEnumerable<Student> GetNoClassStudent()

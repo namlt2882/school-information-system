@@ -72,6 +72,42 @@ namespace SIS_API.Service
             return repository.AddTranscripts(rs);
         }
 
+        public IEnumerable<AcademicTranscript> AddExamToTranscript(Examination examination)
+        {
+            var rs = new List<AcademicTranscript>();
+            // get all active classes
+            var activeClasses = classRepository.GetAllActive();
+            foreach (Class clazz in activeClasses)
+            {
+                // get all active student of class
+                var studentIds = classRepository.GetAllClassMember(clazz.Id).Select(cm => cm.StudentId);
+                // get all active class subject of class
+                var classSubjects = from cs in clazz.ClassSubjects
+                                    where cs.Status == (int)ClassSubjectEnums.STATUS_ACTIVE
+                                    select cs;
+                foreach (int StudentId in studentIds)
+                {
+                    foreach (ClassSubject cs in classSubjects)
+                    {
+                        var tmp = new AcademicTranscript
+                        {
+                            Id = 0,
+                            Status = (int)TranscriptEnums.STATUS_ACTIVE,
+                            Score = null,
+                            StudentId = StudentId,
+                            ExamId = examination.Id,
+                            ClassSubjectId = cs.Id,
+                            SubjectName = cs.Subject.Name,
+                            ExamName = examination.Name,
+                            PercentRate = examination.PercentRate
+                        };
+                        rs.Add(tmp);
+                    }
+                }
+            }
+            return repository.AddTranscripts(rs);
+        }
+
         public void DeleteSubjectFromTranscript(int classId, List<ClassSubject> classSubjects)
         {
             var students = studentRepository.GetStudentOfClass(classId);
@@ -102,7 +138,7 @@ namespace SIS_API.Service
             transcripts.ForEach(at =>
             {
                 AcademicTranscript origin = null;
-                if(originMap.TryGetValue(at.Id, out origin))
+                if (originMap.TryGetValue(at.Id, out origin))
                 {
                     origin.Score = at.Score;
                 }

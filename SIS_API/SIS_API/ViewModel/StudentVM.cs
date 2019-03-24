@@ -13,5 +13,7 @@ namespace SIS_API.ViewModel
         public Nullable<System.DateTime> Birthday { get; set; }
         public System.DateTime InsertDate { get; set; }
         public int Status { get; set; }
+        public ClassVM CurrentClass { get; set; }
+        public IEnumerable<ClassVM> ClosedClasses { get; set; }
     }
 }

@@ -9,5 +9,14 @@ export const StudentService = {
     },
     getNoClassStudent: () => {
         return AuthRequest.get('Student/GetNoClassStudent');
+    },
+    update: (data) => {
+        return AuthRequest.put('Student', data);
+    },
+    delete: (id) => {
+        return AuthRequest.delete(`Student/${id}`);
+    },
+    setGraduated: (id) => {
+        return AuthRequest.put(`Student/${id}/SetGraduated`);
     }
 }
