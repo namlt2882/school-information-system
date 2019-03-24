@@ -7,6 +7,7 @@ import { Container, Header, Button } from 'semantic-ui-react';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { ExamAction } from '../../actions/exam-action';
 import { ExamService } from '../../services/exam-service';
+import { AuthService } from '../../services/auth-service';
 import AddExam from './add-exam';
 import UpdateExam from './update-exam';
 class ListExam extends Component {
@@ -27,13 +28,13 @@ class ListExam extends Component {
                 No: i + 1,
                 Name: e.Name,
                 Percent: `${e.PercentRate} %`,
-                Action: <Button color='primary' onClick={() => {
+                Action: AuthService.isManager() ? <Button color='primary' onClick={() => {
                     let modalContent = <UpdateExam key={e.Id} examId={e.Id} closeModal={this.closeModal} />
                     this.setState({
                         openModal: true,
                         modalContent: modalContent
                     })
-                }}>Cập nhật</Button>
+                }}>Cập nhật</Button> : null
             }
         })
         data1.rows = rows;
