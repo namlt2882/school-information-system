@@ -13,12 +13,24 @@ namespace SIS_API.Controllers
     public class StudentController : ApiController
     {
         StudentService service = new StudentService();
+        ClassService classService = new ClassService();
         [HttpGet]
         [Route("api/Student")]
         public IEnumerable<StudentVM> GetAll()
         {
             var students = service.GetAllActive();
-            return students.Select(i => BaseVM<object>.ToModel<StudentVM>(i));
+            return students.Select(i =>
+            {
+                var vm = BaseVM<object>.ToModel<StudentVM>(i);
+                var clazz = classService.GetStudentCurrentClass(i.Id);
+                var closedClasses = classService.GetStudentClosedClass(i.Id);
+                if (clazz != null)
+                {
+                    vm.CurrentClass = BaseVM<object>.ToModel<ClassVM>(clazz);
+                }
+                vm.ClosedClasses = closedClasses.Select(cc => BaseVM<object>.ToModel<ClassVM>(cc));
+                return vm;
+            });
         }
 
         [HttpGet]
@@ -65,6 +77,13 @@ namespace SIS_API.Controllers
         public void Delete(int id)
         {
             service.Delete(id);
+        }
+
+        [HttpPut]
+        [Route("api/Student/{id}/SetGraduated")]
+        public void SetGraduated(int id)
+        {
+            service.SetGraduated(id);
         }
     }
 }

@@ -16,6 +16,9 @@ namespace SIS_API.Service
             exam.Id = 0;
             exam.Status = (int)ExaminationEnums.STATUS_ACTIVE;
             var rs = repository.Insert(exam);
+            // add transcript
+            TranscriptService transcriptService = new TranscriptService();
+            transcriptService.AddExamToTranscript(rs);
             return rs;
         }
 
