@@ -4,7 +4,7 @@ class NotFoundPage extends Component {
     render() {
         return (
             <div className="container">
-                   <strong>404!</strong> Oops! Your page not found...               
+                   <strong>404!</strong> Oops! Không tìm thấy trang...               
             </div>
         );
     }

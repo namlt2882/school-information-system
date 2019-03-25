@@ -155,7 +155,11 @@ class TeacherDetail extends Component {
     }
 }
 
-
+export const sortTeacher = (teachers) => {
+    teachers.sort((t1, t2) => {
+        return t1.Status - t2.Status;
+    })
+}
 
 export const getTeacherStatusColor = (status) => {
     let color = 'gray';

@@ -61,7 +61,7 @@ class AddClass extends React.Component {
                 }
             }
         }).catch(err => {
-            alert('Service unavailable!');
+            alert('Tác vụ thất bại, vui lòng thử lại sau!');
             this.setState({ loading: false });
         })
     }

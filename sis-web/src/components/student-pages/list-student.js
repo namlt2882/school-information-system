@@ -17,6 +17,7 @@ class ListStudent extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            maxLoading: 1,
             openModal: false,
             modalContent: null
         }
@@ -29,6 +30,7 @@ class ListStudent extends Component {
         StudentService.getAll().then(res => {
             let list = res.data;
             this.props.setStudents(list);
+            this.incrementLoading();
         })
     }
 
