@@ -32,7 +32,7 @@ class LoginPage extends Component {
             .then(res => {
                 this.props.history.push('/')
             }).catch(err => {
-                alert('Wrong username or password!')
+                alert('Sai username hoặc mật khẩu!')
             })
     }
 

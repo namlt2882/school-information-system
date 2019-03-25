@@ -26,6 +26,7 @@ class UpdateExam extends Component {
                 this.props.setExams(exams);
                 this.props.closeModal();
             }).catch(err => {
+                window.alert('Tác vụ thất bại, vui lòng thử lại sau!');
                 this.setState({ formLoading: false });
             })
     }

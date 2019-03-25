@@ -65,7 +65,7 @@ class UpdateClassInfo extends Component {
                 loading: false
             })
         }).catch(err => {
-            window.alert('Service is unavailable!');
+            window.alert('Tác vụ thất bại, vui lòng thử lại sau!');
         })
     }
     render() {

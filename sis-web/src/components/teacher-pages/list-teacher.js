@@ -8,7 +8,7 @@ import { TeacherAction } from '../../actions/teacher-action';
 import { MDBDataTable } from 'mdbreact'
 import { TeacherService } from '../../services/teacher-service';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import TeacherDetail from './teacher-detail';
+import TeacherDetail, { sortTeacher } from './teacher-detail';
 import { SubjectAction } from '../../actions/subject-action';
 import { SubjectService } from '../../services/subject-service';
 import { Link } from 'react-router-dom'
@@ -145,6 +145,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
     setTeachers: (list) => {
+        sortTeacher(list);
         dispatch(TeacherAction.setTeachers(list));
     },
     setSubjects: (list) => {

@@ -47,7 +47,7 @@ class UpdateStudentInfo extends React.Component {
             this.props.setStudent(student);
             this.setState({ isOpen: false, loading: false });
         }).catch(err => {
-            alert('Service unavailable!');
+            alert('Tác vụ thất bại, vui lòng thử lại sau!');
             this.setState({ loading: false });
         })
     }

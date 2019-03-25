@@ -94,9 +94,6 @@ class ListClassTeacherView extends Component {
         let data = this.pushData(this.props.classes);
         return (<Container>
             <Header className='text-center'>Lớp học đang dạy</Header>
-            <div className='col-sm-12'>
-                <AddClass />
-            </div>
             <div className='col-sm-12 row justify-content-center align-self-center'>
                 <div className='col-sm-10'>
                     {data.rows.length > 0 ? <MDBDataTable

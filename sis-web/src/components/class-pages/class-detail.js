@@ -184,11 +184,11 @@ class ClassDetail extends Component {
                             </thead>
                             <tbody>
                                 {clazz.Subjects.map(s => {
-                                    average += s.AverageScore;
+                                    average += s.AverageScore ? s.AverageScore : 0;
                                     return <tr>
                                         <td>{s.Name}</td>
                                         <td>{s.Teacher ? s.Teacher.Name : null}</td>
-                                        <td>{s.AverageScore.toFixed(2)}</td>
+                                        <td>{s.AverageScore ? s.AverageScore.toFixed(2) : 0}</td>
                                     </tr>
                                 })}
                                 <tr>
@@ -219,7 +219,7 @@ class ClassDetail extends Component {
                     </div>
                 </div>
             </div>
-            <Modal isOpen={this.state.isOpenTranscript} className='normal-modal'>
+            <Modal isOpen={this.state.isOpenTranscript} className='big-modal'>
                 <ModalBody>
                     {this.state.transcriptContent}
                 </ModalBody>
@@ -291,8 +291,22 @@ export const sortSubjectAlphabetically = (subjects) => {
 
 export const sortStudentAlphabetically = (students) => {
     students.sort((s1, s2) => {
+        if (s1.Status !== s2.Status) {
+            return s1.Status - s2.Status;
+        }
         let name1 = s1.FirstName.toUpperCase();
         let name2 = s2.FirstName.toUpperCase();
+        return (name1 < name2) ? -1 : (name1 > name2) ? 1 : 0;
+    })
+}
+
+export const sortClass = (classes) => {
+    classes.sort((c1, c2) => {
+        if (c1.Status !== c2.Status) {
+            return c1.Status - c2.Status;
+        }
+        let name1 = c1.Name.toUpperCase();
+        let name2 = c2.Name.toUpperCase();
         return (name1 < name2) ? -1 : (name1 > name2) ? 1 : 0;
     })
 }

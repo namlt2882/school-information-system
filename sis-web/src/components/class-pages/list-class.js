@@ -13,7 +13,7 @@ import { SubjectAction } from '../../actions/subject-action';
 import { TeacherService } from '../../services/teacher-service'
 import { SubjectService } from '../../services/subject-service'
 import { Link } from 'react-router-dom'
-import { getStatusColor, describeClassStatus } from './class-detail';
+import { getStatusColor, describeClassStatus, sortClass } from './class-detail';
 class ListClass extends Component {
     constructor(props) {
         super(props);
@@ -142,6 +142,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
     setClasses: (list) => {
+        sortClass(list);
         dispatch(ClassAction.setClasses(list));
     },
     setTeachers: (list) => {

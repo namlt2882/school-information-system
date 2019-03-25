@@ -31,9 +31,6 @@ export const student = (state = null, { type, student }) => {
         case Types.SET_STUDENT:
             state = { ...student };
             return state;
-        case Types.DELETE_STUDENT:
-            state = null;
-            return state;
         default: return state;
     }
 }

@@ -39,7 +39,7 @@ class ClassSubjectTranscript extends Component {
         let exams = [];
         let transcriptMap = new Map();
         let transcripts = this.props.transcripts;
-        let subjectName = null;
+        let subjectName = '';
         if (transcripts.length > 0) {
             subjectName = transcripts[0].SubjectName;
         }
@@ -112,12 +112,13 @@ class ClassSubjectTranscript extends Component {
         let exams = this.state.exams;
         let transcriptMap = this.state.transcriptMap;
         let average = 0;
+        let transcriptQuantity = this.props.transcripts.length;
         return (<Container>
             <Header>{`Môn: ${this.state.subjectName}`}<br />
                 {`Giáo viên: ${localStorage.getItem('name')}`}</Header>
             <div className='col-sm-12 row'>
                 <Form className='col-sm-12 row' loading={this.state.isLoading}>
-                    <table border='1' className='text-center col-sm-12'>
+                    {transcriptQuantity > 0 ? [<table border='1' className='text-center col-sm-12'>
                         <thead>
                             <th>#</th>
                             <th></th>
@@ -155,11 +156,11 @@ class ClassSubjectTranscript extends Component {
                                 <td>{parseFloat(average / students.length).toFixed(2)}</td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table>,
                     <div className='col-sm-12'>
                         <Button style={{ float: 'right', margin: '10px' }}
                             color='primary' onClick={this.updateTranscript}>Cập nhật bảng điểm</Button>
-                    </div>
+                    </div>] : <b>Chưa có bảng điểm</b>}
                 </Form>
             </div>
         </Container>);

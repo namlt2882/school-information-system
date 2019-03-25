@@ -36,7 +36,7 @@ class AddExam extends React.Component {
             this.props.addExam(rs);
             this.setState({ isOpen: false, loading: false });
         }).catch(err => {
-            alert('Service unavailable!');
+            alert('Tác vụ thất bại, vui lòng thử lại sau!');
             this.setState({ loading: false });
         })
     }

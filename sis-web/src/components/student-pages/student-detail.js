@@ -93,11 +93,12 @@ class StudentDetail extends Component {
                 </div>
             </div>
             <div className='col-sm-9'>
-                {currentClass ? [<label className='text-center'>Bảng điểm hiện tại</label>,
+                {currentClass ? [<label className='text-center bold-text'>Bảng điểm hiện tại</label>,
                 <Divider />,
                 <StudentTranscript key={`${currentClass.Id}-${student.Id}`}
                     classId={currentClass.Id} studentId={student.Id} />] : null}
-                {closedClasses.length > 0 ? [<label className='text-center'>Bảng điểm đã lưu</label>,
+                {closedClasses.length > 0 ? [<br />,
+                <label className='text-center bold-text'>Bảng điểm đã lưu</label>,
                 <Divider />,
                 closedClasses.map(cc => [
                     <div className='bold-text text-center'>{`${cc.Name} (Đã đóng)`}</div>,

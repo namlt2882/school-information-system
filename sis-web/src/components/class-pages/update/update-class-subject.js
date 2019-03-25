@@ -57,7 +57,7 @@ class UpdateClassSubject extends Component {
                         loading: false
                     })
                 }).catch(e => {
-                    alert('Service unavailable!');
+                    alert('Tác vụ thất bại, vui lòng thử lại sau!');
                 })
             } else {
                 this.setState({
