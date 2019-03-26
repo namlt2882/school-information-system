@@ -79,6 +79,7 @@ class UpdateClassInfo extends Component {
                         <Form.Field>
                             <label>Tên lớp</label>
                             <input type='text' value={this.state.name} required
+                                maxLength='30'
                                 onChange={(e) => {
                                     this.setState({ name: e.target.value });
                                 }} />

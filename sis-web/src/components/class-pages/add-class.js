@@ -134,6 +134,7 @@ class AddClass extends React.Component {
                             <Form.Field>
                                 <label>Tên lớp</label>
                                 <input type='text' placeholder='Tên lớp' required
+                                    maxLength='30'
                                     value={this.state.name}
                                     onChange={(e) => {
                                         this.setState({ name: e.target.value });

@@ -18,8 +18,8 @@ class PersonalPage extends Component {
             if (password == null) {
                 return;
             }
-            if (password.trim() == '' || password.length < 4) {
-                window.alert('Mật khẩu phải có ít nhất 4 chữ và không chứa dấu cách');
+            if (password.trim() == '' || password.length < 4 || password.length > 20) {
+                window.alert('Mật khẩu phải có ít nhất 4 kí tự, nhiều nhất 20 kí tự và không chứa dấu cách');
             } else {
                 while (true) {
                     let confirmPassword = window.prompt('Nhập lại mật khẩu mới:');

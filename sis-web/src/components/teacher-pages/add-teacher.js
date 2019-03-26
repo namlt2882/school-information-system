@@ -65,6 +65,7 @@ class AddTeacher extends React.Component {
                         <Form.Field>
                             <label>Username</label>
                             <input type='text' placeholder='Username' required
+                                maxLength='20'
                                 value={this.state.username}
                                 onChange={(e) => {
                                     this.setState({ username: e.target.value });
@@ -73,6 +74,7 @@ class AddTeacher extends React.Component {
                         <Form.Field>
                             <label>Họ và tên</label>
                             <input type='text' placeholder='Name' required
+                                maxLength='50'
                                 value={this.state.name}
                                 onChange={(e) => {
                                     this.setState({ name: e.target.value });
@@ -81,6 +83,8 @@ class AddTeacher extends React.Component {
                         <Form.Field>
                             <label>Mật khẩu</label>
                             <input type='password' placeholder='Password' required
+                                minLength='4'
+                                maxLength='20'
                                 value={this.state.password}
                                 onChange={(e) => {
                                     this.setState({ password: e.target.value });

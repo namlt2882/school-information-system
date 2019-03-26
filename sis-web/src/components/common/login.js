@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import Component from './component';
 import { FormGroup, Label, Input } from 'reactstrap';
 import { withRouter } from 'react-router-dom'
+import { Form } from 'semantic-ui-react';
 
 class LoginPage extends Component {
     constructor(props) {
@@ -53,17 +54,23 @@ class LoginPage extends Component {
                     <div className='col-sm-6' style={{ 'margin-top': '100px' }}>
                         <Jumbotron>
                             <h3>School Information System</h3>
-                            <FormGroup>
-                                <Label>Username</Label>
-                                <Input type="text" required={true} placeholder="Username" value={this.state.username}
-                                    onChange={this.changeUsername} />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label>Password</Label>
-                                <Input type="password" required={true} placeholder="Password" value={this.state.password}
-                                    onChange={this.changePassword} />
-                            </FormGroup>
-                            <Button onClick={this.login}>Login</Button>
+                            <Form onSubmit={this.login}>
+                                <FormGroup>
+                                    <Label>Username</Label>
+                                    <Input type="text" required={true}
+                                        maxLength='20'
+                                        placeholder="Username" value={this.state.username}
+                                        onChange={this.changeUsername} />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label>Password</Label>
+                                    <Input type="password" required={true}
+                                        maxLength='20'
+                                        placeholder="Password" value={this.state.password}
+                                        onChange={this.changePassword} />
+                                </FormGroup>
+                                <Button color='primary'>Login</Button>
+                            </Form>
                         </Jumbotron>
                     </div></div>
             </div>);

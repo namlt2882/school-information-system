@@ -48,6 +48,7 @@ class AddSubject extends React.Component {
                         <Form.Field>
                             <label>Tên</label>
                             <input type='text' placeholder='Name' required
+                                maxLength='50'
                                 value={this.state.name}
                                 onChange={(e) => {
                                     this.setState({ name: e.target.value });
