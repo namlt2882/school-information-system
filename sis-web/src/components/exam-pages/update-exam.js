@@ -39,6 +39,7 @@ class UpdateExam extends Component {
             <Form.Field>
                 <label>Tên mới</label>
                 <input type='text' value={this.state.name} required
+                    maxLength='30'
                     onChange={(e) => {
                         let val = e.target.value;
                         this.setState({

@@ -69,6 +69,7 @@ class UpdateStudentInfo extends React.Component {
                         <Form.Field>
                             <label>Họ</label>
                             <input type='text' placeholder='Họ' required
+                                maxLength='50'
                                 value={this.state.lastName}
                                 onChange={(e) => {
                                     this.setState({ lastName: e.target.value });
@@ -77,6 +78,7 @@ class UpdateStudentInfo extends React.Component {
                         <Form.Field>
                             <label>Tên</label>
                             <input type='text' placeholder='Tên' required
+                                maxLength='50'
                                 value={this.state.firstName}
                                 onChange={(e) => {
                                     this.setState({ firstName: e.target.value });

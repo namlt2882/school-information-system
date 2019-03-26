@@ -76,6 +76,7 @@ class UpdateTeacherInfo extends Component {
                             <Form.Field>
                                 <label>Họ và tên</label>
                                 <input type='text' placeholder='Name' required
+                                    maxLength='50'
                                     value={this.state.name}
                                     onChange={(e) => {
                                         this.setState({ name: e.target.value });

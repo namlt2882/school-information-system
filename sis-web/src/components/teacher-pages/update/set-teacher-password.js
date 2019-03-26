@@ -56,7 +56,8 @@ class SetTeacherPassword extends Component {
                             <Form.Field>
                                 <label>Mật khẩu mới:</label>
                                 <input type='password' value={this.state.password} required
-                                    minLength={4}
+                                    minLength='4'
+                                    maxLength='20'
                                     onChange={(e) => {
                                         let val = e.target.value;
                                         val = val.replace(' ', '');

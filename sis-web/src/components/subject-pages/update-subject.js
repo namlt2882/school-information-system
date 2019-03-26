@@ -38,6 +38,7 @@ class UpdateSubject extends Component {
             <Form.Field>
                 <label>Tên mới:</label>
                 <input required value={this.state.name}
+                    maxLength='50'
                     onChange={(e) => {
                         let val = e.target.value;
                         this.setState({ name: val });
