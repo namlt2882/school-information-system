@@ -13,32 +13,33 @@ const getToken = () => {
 }
 
 const getAuthConfig = () => {
+    const referrer = window.location.origin;
     let config = {
-        headers: {
-            Authorization: getToken(),
+            'Authorization': getToken(),
+            'Referrer': referrer
             // 'Access-Control-Allow-Origin': '*',
             // 'Access-Control-Allow-Headers': '*',
             // 'Access-Control-Allow-Methods': 'PUT, GET, POST, DELETE, OPTIONS'
         }
-    }
+    
     return config;
 }
 
 export const AuthRequest = {
     post(URL, data) {
         let config = getAuthConfig();
-        return Request().post(URL, data, config);
+        return Request().post(URL, data, { config });
     },
     get(URL) {
         let config = getAuthConfig();
-        return Request().get(URL, config);
+        return Request().get(URL, { config });
     },
     put(URL, data) {
         let config = getAuthConfig();
-        return Request().put(URL, data, config);
+        return Request().put(URL, data, { config });
     },
     delete(URL) {
         let config = getAuthConfig();
-        return Request().delete(URL, config);
+        return Request().delete(URL, { config });
     }
 }
