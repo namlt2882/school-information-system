@@ -1,6 +1,7 @@
 # School Information System - SIS
 Web application for small school manage their **teacher**, **student**, **subject** and **academic transcript**.
 
+## Technology
 This software includes 2 components: Web front-end (**ReactJS**) and Back-end API (**.NET framework** and **Microsoft SQL Server**).
 
 ## Usage
